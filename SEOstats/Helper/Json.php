@@ -19,15 +19,13 @@ class Json
     * @param    boolean $accos  When true, returned objects will be converted into associative arrays.
     * @return   mixed   number, boolean, string, array, or object corresponding to given JSON input string.
     *                   Note that decode() always returns strings in ASCII or UTF-8 format!
+    * @throws \RuntimeException
     */
     public static function decode($str, $assoc = false)
     {
-        if (! function_exists('json_decode')) {
-            $j = self::getJsonService();
-            return $j->decode($str);
-        } else {
-            return $assoc ? json_decode($str, true) : json_decode($str);
-        }
+        self::guardJsonAvailable();
+
+        return json_decode($str, (bool) $assoc);
     }
 
    /**
@@ -37,23 +35,24 @@ class Json
     *                           if var is a string, note that encode() always expects it
     *                           to be in ASCII or UTF-8 format!
     * @return   mixed   JSON string representation of input var or an error if a problem occurs
+    * @throws \RuntimeException
     */
     public static function encode($var)
     {
-        if (! function_exists('json_encode')) {
-            $j = self::getJsonService();
-            return $j->encode($var);
-        } else {
-            return json_encode($var);
-        }
+        self::guardJsonAvailable();
+
+        return json_encode($var);
     }
 
     /**
-     * Return a new object of Services_JSON class.
-     * Used if native PHP JSON extension is not available.
+     * throws an Exception if json extention not available
+     *
+     * @throws \RuntimeException
      */
-    private static function getJsonService()
+    private static function guardJsonAvailable()
     {
-        return new \Services_JSON();
+        if (! function_exists('json_encode')) {
+            throw new \RuntimeException("ext-json is not installed!");
+        }
     }
 }
