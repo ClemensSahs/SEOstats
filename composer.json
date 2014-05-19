@@ -17,13 +17,18 @@
 		"Alexa"
 	],
 	"homepage" : "http://github.com/eyecatchup/SEOstats",
-	"version" : "2.5.3-beta2",
+	"version" : "3.x",
 	"license" : "MIT",
 	"authors" : [{
 			"name" : "Stephan Schmitz",
 			"email" : "eyecatchup@gmail.com",
 			"homepage" : "https://github.com/eyecatchup",
 			"role" : "Creator, Developer, Maintainer"
+		},{
+			"name" : "Clemens Sahs",
+			"email" : "clemens-sahs@slides-worker.org",
+			"homepage" : "https://github.com/ClemensSahs",
+			"role" : "Developer, Maintainer"
 		}, {
 			"name" : "SEOstats Community",
 			"homepage" : "https://github.com/eyecatchup/seostats/contributors",
@@ -33,7 +38,8 @@
 	"require" : {
 		"php" : ">=5.3",
 		"ext-curl" : "*",
-		"ext-json" : "*"
+		"ext-json" : "*",
+		"guzzle/guzzle" : "~3"
 	},
     "require-dev" : {
 				"squizlabs/php_codesniffer" : "~1",
@@ -42,11 +48,11 @@
 				"scrutinizer/ocular" : "~1"
     },
 	"autoload" : {
-		"psr-0" : {
-			"SEOstats\\" : ""
+		"psr-4" : {
+			"SeoStats" : "src"
 		},
 		"classmap" : [
-			"SEOstats/Services/3rdparty"
+			"SEOstats"
 		]
 	}
 }
