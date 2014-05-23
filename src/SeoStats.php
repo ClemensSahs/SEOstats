@@ -66,8 +66,45 @@ class SeoStats
         return $this->manager;
     }
 
-    public function get($service, $url)
+    public function get($serviceName, $url)
     {
+        if (! $url instanceof PageInterface) {
+            return $this->getWithList($serviceName, $url);
+        }
 
+        return $this->getServiceManager()->get($serviceName)->call($url);
+    }
+
+    public function getWithList($serviceName, PageListInterface $pageList)
+    {
+        $service = $this->getServiceManager()->get($serviceName);
+
+        $response = array();
+        foreach ($pageList as $page) {
+            $response[$page->getUrl()] = $service->call($url);
+        }
+
+        return $response;
+    }
+
+    public function createPageObject($url)
+    {
+        $page = new Page($url);
+        $page->setSeoStats($this);
+        return $page;
+    }
+
+    public function createPageListObject(array $urlList)
+    {
+        $pageList = new PageList();
+        $page->setSeoStats($this);
+        return $page;
+    }
+
+    public function __call($methodeName)
+    {
+        $page = new Page($url);
+        $page->setSeoStats($this);
+        return $page;
     }
 }
