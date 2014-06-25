@@ -4,10 +4,15 @@ use SeoStats\SeoStats;
 
 $seoStats = new SeoStats();
 
-$url= array();
-$url[] = 'wikipedia.org';
-$url[] = 'php.net';
-$url[] = 'stackoverflow.com';
+$urlList= array();
+$urlList[] = 'wikipedia.org';
+$urlList[] = 'php.net';
+$urlList[] = 'stackoverflow.com';
 
-$backlinks = $seoStats->get('google-backlinks', $url);
-$backlinks = $seoStats->getGoogleBacklinks($url);
+$pageListObject = $seoStats->createPageObject($urlList);
+
+$backlinks = $seoStats->get('google-backlinks', $pageListObject);
+
+if ($backlinks == $seoStats->getGoogleBacklinks($pageListObject)) {
+    // true
+}

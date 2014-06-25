@@ -4,12 +4,12 @@ use SeoStats\SeoStats;
 
 $seoStats = new SeoStats();
 
-$url = 'wikipedia.org';
+$pageObject = $seoStats->createPageObject('wikipedia.org');
 
-$backlinks = $seoStats->get('google-backlinks', $url); // 1st call
-$backlinks = $seoStats->getGoogleBacklinks($url);      // no call get from cache
+$backlinks = $seoStats->get('google-backlinks', $pageObject); // 1st call
+$backlinks = $seoStats->getGoogleBacklinks($pageObject);      // no call get from cache
 
 $seoStats->disableLocalCache();
 
-$backlinks = $seoStats->get('google-backlinks', $url); // 2nd call
-$backlinks = $seoStats->getGoogleBacklinks($url);      // 3rd call
+$backlinks = $seoStats->get('google-backlinks', $pageObject); // 2nd call
+$backlinks = $seoStats->getGoogleBacklinks($pageObject);      // 3rd call
