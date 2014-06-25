@@ -2,9 +2,7 @@
 
 namespace SeoStats\Service\Cache;
 
-use SeoStats\Service\AdapterService;
-
-class CacheAdapter extends AdapterService
+class Redis extends AbstractCacheAdapter
 {
     /**
      * @param string $key
@@ -12,7 +10,7 @@ class CacheAdapter extends AdapterService
      */
     public function hasCache($key)
     {
-        return false;
+        throw new \RuntimeException('currently no logic');
     }
     /**
      * @param string $key
@@ -20,7 +18,7 @@ class CacheAdapter extends AdapterService
      */
     public function getCache($key)
     {
-        return null;
+        throw new \RuntimeException('currently no logic');
     }
 
     /**
@@ -29,5 +27,6 @@ class CacheAdapter extends AdapterService
      */
     public function setCache($key, $value)
     {
+        throw new \RuntimeException('currently no logic');
     }
 }
