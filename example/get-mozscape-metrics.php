@@ -22,7 +22,7 @@
 
 // Bootstrap the library / register autoloader
 #require_once realpath(__DIR__ . '/SEOstats/bootstrap.php');
-require_once realpath(__DIR__ . '/vendor/autoload.php');
+require_once realpath(__DIR__ . '/../vendor/autoload.php');
 
 use \SEOstats\Services\Mozscape as Mozscape;
 
