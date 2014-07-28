@@ -101,7 +101,7 @@ class SeoStats
         return $page;
     }
 
-    public function __call($methodeName)
+    public function __call($methodeName, $args)
     {
         $page = new Page($url);
         $page->setSeoStats($this);
