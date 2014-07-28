@@ -32,7 +32,7 @@ class PageList implements PageListInterface
     public function add($url)
     {
         if(is_string($url)) {
-            $url = array(static::$pageClass($url));
+            $url = $this->getSeoStats()->createPageObject($url);
             $url->setSeoStats($this->getSeoStats());
         }
 
