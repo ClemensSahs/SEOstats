@@ -21,10 +21,12 @@ class Page implements PageInterface
      *
      * @param string $url
      */
-    public function __construct($url, SeoStats $seoStats)
+    public function __construct($url, SeoStats $seoStats = null)
     {
         $this->setUrl($url);
-        $this->setSeoStats($seoStats);
+        if ($seoStats) {
+            $this->setSeoStats($seoStats);
+        }
     }
 
 
@@ -70,7 +72,40 @@ class Page implements PageInterface
      * @param string $url
      */
     protected function guardUrlIsValid($url)
-    {}
+    {
+        if(!isset($url) || 1 > strlen($url)) {
+            throw new \RuntimeException(sprintf('given string "%s" is to short to be a valid URL', $url));
+        }
+
+        $parstedData = $this->parseUrl($url);
+
+        var_dump($parstedData, ! $parstedData['host'], !$parstedData['scheme']);
+
+        if (! $parstedData['host'] && !$parstedData['scheme']) {
+            throw new \RuntimeException(sprintf('given string "%s" is not a valid URL', $url));
+        }
+    }
+
+    protected function isValidUrl($url)
+    {
+        if(!isset($url) || 1 > strlen($url)) {
+            return false;
+        }
+
+        $parstedData = $this->parseUrl($url);
+
+        return (bool) ($parstedData['host'] &&
+                       $parstedData['scheme'] &&
+                       $this->isValidUrlRfc($url));
+    }
+
+    protected function isValidUrlRfc($url)
+    {
+        $pattern  = '([A-Za-z][A-Za-z0-9+.-]{1,120}:[A-Za-z0-9/](([A-Za-z0-9$_.+!*,;/?:@&~=-])';
+        $pattern .= '|%[A-Fa-f0-9]{2}){1,333}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*,;/?:@&~=%-]{0,1000}))?)';
+        return (bool) preg_match($pattern, $url);
+    }
+
 
     /**
      *
