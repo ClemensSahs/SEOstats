@@ -11,6 +11,9 @@ namespace SEOstats\V3\Model;
  * @updated    2013/02/03
  */
 
+use SeoStats\V3\Model\Exception\UrlIsToShortException;
+use SeoStats\V3\Model\Exception\UrlIsNotValidException;
+
 class Url
 {
     /**
@@ -38,9 +41,25 @@ class Url
         $this->setUrl($url);
     }
 
-    protected function getUrl($orign = false)
+    public function getUrl($orign = false)
     {
-        return $orign ? $this->url : $this->originUrl;
+        if ($orign) {
+            return $this->originUrl;
+        }
+
+        if (! isset($this->url)) {
+            $this->buildUrlFromParsed();
+        }
+        return $this->url;
+    }
+
+    protected function buildUrlFromParsed()
+    {
+        $this->url = strtolower(sprintf('%s://%s%s',
+                             $this->getScheme(),
+                             $this->getHost(),
+                             $this->getPath()
+                         ));
     }
 
     public function getHost()
@@ -52,7 +71,13 @@ class Url
     public function getScheme()
     {
         $this->gurardUrlIsValid();
-        return $this->parsedUrl['host'];
+        return $this->parsedUrl['scheme'];
+    }
+
+    public function getPath()
+    {
+        $this->gurardUrlIsValid();
+        return isset($this->parsedUrl['path']) ? $this->parsedUrl['path'] : '';
     }
 
     public function isValid()
@@ -63,18 +88,25 @@ class Url
     protected function gurardUrlIsValid()
     {
         if (!$this->isValid()) {
-            throw \RuntimeException(sprintf('url "%s" was not be valid', $this->getUrl(true)));
+            throw new UrlIsNotValidException(sprintf('url "%s" was not be valid', $this->getUrl(true)));
         }
     }
 
+    /**
+     *
+     * @throw UrlIsNotValidException
+     * @throw UrlIsToShortException
+     */
     protected function setUrl($url)
     {
-        if(isset($url) && 1 < strlen($url)) {
-            throw new \RuntimeException(sprintf('given string "%s" is to short', $url));
+        if(isset($url) && 2 > strlen($url)) {
+            throw new UrlIsToShortException(sprintf('given string "%s" is to short', $url));
         }
 
         $this->originUrl = $url;
         $this->cleanUrl();
+
+        $this->gurardUrlIsValid();
     }
 
     protected function cleanUrl()
@@ -86,7 +118,9 @@ class Url
 
     protected function parseUrl()
     {
-        $parsedUrl = @parse_url(preg_replace('#^([^:/?]+://)?#', 'http://', $this->originUrl));
+        $url = preg_replace('#^([^:/?]+://)?#', 'http://', $this->originUrl);
+        $parsedUrl = @parse_url($url);
+
         if (!is_array($parsedUrl)) {
             $parsedUrl = array(
                 'host'=>false,
@@ -95,44 +129,30 @@ class Url
             );
         }
 
-        if (!isset($parsedUrl['host']) && empty($parsedUrl['host'])) {
+        if (empty($parsedUrl['host'])) {
             $parsedUrl['host'] = false;
         }
-        if ($parsedUrl['scheme'] == 'https' ) {
-            $parsedUrl['scheme'] = 'http';
-        } elseif ($parsedUrl['scheme'] != 'http' ) {
+
+        if ($parsedUrl['scheme'] != 'http' ) {
             $parsedUrl['scheme'] = false;
         }
 
         return $parsedUrl;
     }
 
-    public static function validUrl($url)
+    public function validUrl()
     {
-        if (!$parsedUrl['scheme'] ||
-            !$parsedUrl['host'] ||
-            !$parsedUrl['path']
+        if (!$this->parsedUrl['scheme'] ||
+            !$this->parsedUrl['host']
         ) {
             return false;
         }
 
+        return true;
 
-
-
-
-    }
-
-    public static function isValidUrlAccordingToRfc($url)
-    {
-        if(isset($url) && 1 < strlen($url)) {
-            $host   = self::parseHost($url);
-            $scheme = strtolower(parse_url($url, PHP_URL_SCHEME));
-            if (false !== $host && ($scheme == 'http' || $scheme == 'https')) {
-                $pattern  = '([A-Za-z][A-Za-z0-9+.-]{1,120}:[A-Za-z0-9/](([A-Za-z0-9$_.+!*,;/?:@&~=-])';
-                $pattern .= '|%[A-Fa-f0-9]{2}){1,333}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*,;/?:@&~=%-]{0,1000}))?)';
-                return (bool) preg_match($pattern, $url);
-            }
-        }
-        return false;
+        // rfc url controll
+        // $pattern  = '([A-Za-z][A-Za-z0-9+.-]{1,120}:[A-Za-z0-9/](([A-Za-z0-9$_.+!*,;/?:@&~=-])';
+        // $pattern .= '|%[A-Fa-f0-9]{2}){1,333}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*,;/?:@&~=%-]{0,1000}))?)';
+        // return (bool) preg_match($pattern, $this->getUrl());
     }
 }
