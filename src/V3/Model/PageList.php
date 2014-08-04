@@ -8,6 +8,7 @@ class PageList implements PageListInterface
 {
     protected static $pageClass = 'SeoStats\Model\Page';
     private $pages = array();
+    private $pageIndex = array();
     private $position = 0;
 
     /**
@@ -16,14 +17,16 @@ class PageList implements PageListInterface
     protected $seoStats;
 
     /**
+     * @param SeoStats $seoStats
      * @param array $pages
      */
-    public function __construct( array $pages, SeoStats $seoStats)
+    public function __construct(SeoStats $seoStats, array $pages = null)
     {
         $this->setSeoStats($seoStats);
 
-        $this->position = 0;
-        $this->addArray($pages);
+        if ($pages) {
+            $this->addArray($pages);
+        }
     }
 
    /**
@@ -32,25 +35,48 @@ class PageList implements PageListInterface
     public function add($url)
     {
         if(is_string($url)) {
-            $url = $this->getSeoStats()->createPageObject($url);
-            $url->setSeoStats($this->getSeoStats());
+            $page = $this->getSeoStats()->createPageObject($url);
+        } else {
+            $page = $url;
         }
 
-        $this->addPage($url);
+        $this->addPage($page);
     }
 
    /**
     * @param PageInterface $page
     */
-    protected function addPage(PageInterface $page)
+    public function addPage(PageInterface $page)
     {
-        array_push($this->pages, $url);
+        if ($this->hasPage($page)) {
+            return true;
+        }
+        array_push($this->pages, $page);
+        $this->pageIndex[$page->getUrl()] = $page;
     }
 
    /**
     * @param PageInterface $page
     */
-    protected function addArray(array $pageList)
+    public function hasPage(PageInterface $page)
+    {
+        $url = $page->getUrl();
+        return isset($this->pageIndex[$url]);
+    }
+
+   /**
+    * @param PageInterface $page
+    */
+    public function findPage(PageInterface $page)
+    {
+        $url = $page->getUrl();
+        return $this->pageIndex[$url];
+    }
+
+   /**
+    * @param PageInterface $page
+    */
+    public function addArray(array $pageList)
     {
         foreach ($pageList as $page) {
             $this->add($page);
@@ -62,7 +88,7 @@ class PageList implements PageListInterface
     */
     public function remove($url) {
         if(is_string($url)) {
-            $url = static::$pageClass($url);
+            $page = $this->getSeoStats()->createPageObject($url);
         }
         $this->removePage($url);
     }
@@ -115,7 +141,11 @@ class PageList implements PageListInterface
         return isset($this->pages[$this->position]);
     }
 
-    public function setSeoStats(SeoStats $seoStats)
+    /**
+     *
+     * @param SeoStats
+     */
+    protected function setSeoStats(SeoStats $seoStats)
     {
         $this->seoStats = $seoStats;
     }
