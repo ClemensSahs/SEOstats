@@ -4,7 +4,7 @@ namespace SeoStats\V3\Service;
 
 use SeoStats\V3\Service\CacheAdapter;
 
-class AbstractCachableService extends AbstractService
+abstract class AbstractCachableService extends AbstractService
 {
     /**
      *

@@ -2,12 +2,12 @@
 
 namespace SeoStats\V3\Service\Google;
 
-use SeoStats\V3\Service\AbstractService;
 use SeoStats\V3\SeoStats;
 use SeoStats\V3\Helper\Json;
 use SeoStats\V3\Service\Config;
+use SeoStats\V3\Model\PageInterface;
 
-class AbstractGoogleApiService extends AbstractService
+abstract class AbstractGoogleApiService extends AbstractGoogleService
 {
     /**
      * @var string $searchUrls
@@ -81,5 +81,5 @@ class AbstractGoogleApiService extends AbstractService
      * @param string $url
      * @return string
      */
-    abstract public function parseUrl($url);
+    abstract public function parseUrl(PageInterface $url);
 }

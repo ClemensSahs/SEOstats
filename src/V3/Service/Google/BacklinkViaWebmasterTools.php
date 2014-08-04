@@ -2,7 +2,7 @@
 
 namespace SeoStats\V3\Service\Google;
 
-class BacklinkViaWebmasterTools extends AbstractService
+class BacklinkViaWebmasterTools extends AbstractGoogleService
 {
     public function call($url)
     {

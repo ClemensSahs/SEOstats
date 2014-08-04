@@ -2,9 +2,9 @@
 
 namespace SeoStats\V3\Service\Cache;
 
-use SeoStats\V3\Service\AdapterService;
+use SeoStats\V3\Service\AbstractService;
 
-class AbstractCacheAdapter extends AdapterService
+abstract class AbstractCacheAdapter extends AbstractService
 {
     /**
      * @param string $key

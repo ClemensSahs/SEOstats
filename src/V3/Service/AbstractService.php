@@ -4,7 +4,7 @@ namespace SeoStats\V3\Service;
 
 use SeoStats\V3\Helper\HttpAdapter;
 
-class AbstractService
+abstract class AbstractService
 {
     // if we use only php5.4
     // use \SeoStats\Helper\HttpAdapterAwareTrait

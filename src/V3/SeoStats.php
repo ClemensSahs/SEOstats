@@ -8,6 +8,8 @@ use SeoStats\V3\Service\Manager;
 class SeoStats
 {
     public static $NO_DATA = 'n.a.';
+    protected static $pageClass = 'SeoStats\V3\Model\Page';
+    protected static $pageListClass = 'SeoStats\V3\Model\PageList';
 
     /**
      *
@@ -89,22 +91,21 @@ class SeoStats
 
     public function createPageObject($url)
     {
-        $page = new Page($url);
-        $page->setSeoStats($this);
+        $class = static::$pageClass;
+        $page = new $class($url, $this);
         return $page;
     }
 
     public function createPageListObject(array $urlList)
     {
-        $pageList = new PageList();
-        $page->setSeoStats($this);
+        $class = static::$pageListClass;
+        $page = new $class($urlList, $this);
         return $page;
     }
 
     public function __call($methodeName, $args)
     {
-        $page = new Page($url);
-        $page->setSeoStats($this);
-        return $page;
+
+
     }
 }
