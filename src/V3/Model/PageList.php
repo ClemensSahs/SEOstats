@@ -184,18 +184,6 @@ class PageList implements PageListInterface
      */
     public function getSeoStats()
     {
-        $this->guardHasSeoStats();
         return $this->seoStats;
-    }
-
-    /**
-     *
-     * @param string $url
-     */
-    protected function guardHasSeoStats()
-    {
-        if ($this->seoStats == null) {
-            throw new \RuntimeException('...');
-        }
     }
 }
