@@ -108,7 +108,6 @@ class PageList implements PageListInterface
     }
 
    /**
-    * @todo here we can be faster if we have a ObjectIndex, that index make a add slower...
     * @param PageInterface $page
     */
     protected function removePage(PageInterface $page)
@@ -120,6 +119,24 @@ class PageList implements PageListInterface
         $this->pages = array_udiff($this->pages, $remove, function ($value1, $value2) {
             return ($value1 === $value2) ? 0 : -1;
         });
+    }
+
+    /**
+     *
+     * @param SeoStats
+     */
+    protected function setSeoStats(SeoStats $seoStats)
+    {
+        $this->seoStats = $seoStats;
+    }
+
+    /**
+     *
+     * @return SeoStats
+     */
+    public function getSeoStats()
+    {
+        return $this->seoStats;
     }
 
     /**
@@ -166,23 +183,5 @@ class PageList implements PageListInterface
      */
     function valid() {
         return isset($this->pages[$this->position]);
-    }
-
-    /**
-     *
-     * @param SeoStats
-     */
-    protected function setSeoStats(SeoStats $seoStats)
-    {
-        $this->seoStats = $seoStats;
-    }
-
-    /**
-     *
-     * @return SeoStats
-     */
-    public function getSeoStats()
-    {
-        return $this->seoStats;
     }
 }
