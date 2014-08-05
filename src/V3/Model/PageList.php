@@ -40,7 +40,7 @@ class PageList implements PageListInterface
             $page = $url;
         }
 
-        $this->addPage($page);
+        return $this->addPage($page);
     }
 
    /**
@@ -58,18 +58,30 @@ class PageList implements PageListInterface
    /**
     * @param PageInterface $page
     */
-    public function hasPage(PageInterface $page)
+    public function hasPage($page)
     {
-        $url = $page->getUrl();
+        if ($page instanceof PageInterface) {
+            $url = $page->getUrl();
+        } else {
+            $urlObject = new Url($page);
+            $url = $urlObject->getUrl();
+        }
+
         return isset($this->pageIndex[$url]);
     }
 
    /**
     * @param PageInterface $page
     */
-    public function findPage(PageInterface $page)
+    public function findPage($url)
     {
-        $url = $page->getUrl();
+        $urlObject = new Url($url);
+        $url = $urlObject->getUrl();
+
+        if (!isset($this->pageIndex[$url])) {
+            return null;
+        }
+
         return $this->pageIndex[$url];
     }
 
@@ -88,9 +100,12 @@ class PageList implements PageListInterface
     */
     public function remove($url) {
         if(is_string($url)) {
-            $page = $this->getSeoStats()->createPageObject($url);
+            $page = $this->findPage($url);
+        } else {
+            $page = $url;
         }
-        $this->removePage($url);
+
+        $this->removePage($page);
     }
 
    /**
@@ -99,7 +114,13 @@ class PageList implements PageListInterface
     */
     protected function removePage(PageInterface $page)
     {
-        $this->pages = array_diff($this->pages, array($url));
+        unset($this->pageIndex[$page->getUrl()]);
+
+        $remove = array($page);
+
+        $this->pages = array_udiff($this->pages, $remove, function ($value1, $value2) {
+            return ($value1 === $value2) ? 0 : -1;
+        });
     }
 
     /**
@@ -107,11 +128,18 @@ class PageList implements PageListInterface
      */
 
     /**
-     *
+     * @return interger
      */
-    function rewind() {
-        $this->position = 0;
+    function count() {
+        return count($this->pages);
     }
+
+   /**
+    *
+    */
+   function rewind() {
+       $this->position = 0;
+   }
 
     /**
      *
