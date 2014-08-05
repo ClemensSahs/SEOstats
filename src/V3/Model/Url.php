@@ -19,6 +19,11 @@ class Url
     /**
      * @var string
      */
+    protected static $canonicalUrls = array();
+
+    /**
+     * @var string
+     */
     protected $url;
 
     /**
@@ -154,5 +159,17 @@ class Url
         // $pattern  = '([A-Za-z][A-Za-z0-9+.-]{1,120}:[A-Za-z0-9/](([A-Za-z0-9$_.+!*,;/?:@&~=-])';
         // $pattern .= '|%[A-Fa-f0-9]{2}){1,333}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*,;/?:@&~=%-]{0,1000}))?)';
         // return (bool) preg_match($pattern, $this->getUrl());
+    }
+
+    public static function canonicalizeUrl($url)
+    {
+        if (isset(static::$canonicalUrls[$url])) {
+            return static::$canonicalUrls[$url];
+        }
+
+        $urlObject = new static($url);
+        static::$canonicalUrls[$url] = $urlObject->getUrl();
+
+        return static::$canonicalUrls[$url];
     }
 }

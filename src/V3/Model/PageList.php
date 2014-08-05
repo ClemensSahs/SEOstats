@@ -55,9 +55,9 @@ class PageList implements PageListInterface
         $this->pageIndex[$page->getUrl()] = $page;
     }
 
-   /**
-    * @param PageInterface $page
-    */
+    /**
+     * @param string|PageInterface $page
+     */
     public function hasPage($page)
     {
         if ($page instanceof PageInterface) {
@@ -71,18 +71,17 @@ class PageList implements PageListInterface
     }
 
    /**
-    * @param PageInterface $page
+    * @param string $url
     */
     public function findPage($url)
     {
-        $urlObject = new Url($url);
-        $url = $urlObject->getUrl();
+        $canonicalizedUrl = Url::canonicalizeUrl($url);
 
-        if (!isset($this->pageIndex[$url])) {
+        if (!isset($this->pageIndex[$canonicalizedUrl])) {
             return null;
         }
 
-        return $this->pageIndex[$url];
+        return $this->pageIndex[$canonicalizedUrl];
     }
 
    /**
