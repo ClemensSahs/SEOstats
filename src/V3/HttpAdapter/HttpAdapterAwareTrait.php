@@ -1,6 +1,6 @@
 <?php
 
-namespace SeoStats\V3\Helper;
+namespace SeoStats\V3\HttpAdapter;
 
 trait HttpAdapterAwareTrait
 {

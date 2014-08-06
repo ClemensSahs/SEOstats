@@ -1,15 +1,11 @@
 <?php
 
-namespace SeoStats\V3\Helper;
+namespace SeoStats\V3\HttpAdapter;
 
 use Guzzle\Http\Client as HttpClient;
 
-class HttpAdapter
+class HttpAdapter implements HttpAdapterInterface
 {
-    const HTTP_METHOD_GET    = 'get';
-    const HTTP_METHOD_POST   = 'post';
-    const HTTP_METHOD_PUT    = 'put';
-    const HTTP_METHOD_DELETE = 'delete';
 
     protected $allowedMethods = array(
       self::HTTP_METHOD_GET,
