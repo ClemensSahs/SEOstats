@@ -2,7 +2,7 @@
 
 namespace SeoStats\V3\Helper;
 
-class HttpAdapterAwareTrait
+trait HttpAdapterAwareTrait
 {
     /**
      *
