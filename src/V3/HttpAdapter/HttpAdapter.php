@@ -27,6 +27,16 @@ class HttpAdapter implements HttpAdapterInterface
     protected $requestAutoClean = true;
 
 
+    public function __construct($baseUrl = null, array $baseVariable = array())
+    {
+        if ($baseUrl) {
+            $this->setBaseUrl($baserUrl);
+        }
+        if ($baseVariable) {
+            $this->setBaseUrl($baseVariable);
+        }
+    }
+
     public function setUrl($url)
     {
         $this->requestUrl = $url;
@@ -104,12 +114,30 @@ class HttpAdapter implements HttpAdapterInterface
     }
 
     /**
+     * @param array
+     */
+    public function getBaseVariable()
+    {
+        $client = $this->getClient();
+        return $client->getConfig()->toArray();
+    }
+
+    /**
      * @param string
      */
     public function setBaseUrl($url)
     {
         $client = $this->getClient();
         $client->setBaseUrl($url);
+    }
+
+    /**
+     * @param string
+     */
+    public function getBaseUrl($url)
+    {
+        $client = $this->getClient();
+        return $client->setBaseUrl($url);
     }
 
     public function send()
@@ -130,17 +158,22 @@ class HttpAdapter implements HttpAdapterInterface
         return $response;
     }
 
-    public function getClient ()
+    protected function getClient ()
     {
         if (! isset($this->client)) {
-            $this->client = new HttpClient();
+            $this->initClient();
         }
 
         return $this->client;
     }
 
-    public function setClient (HttpClient $client)
+    protected function setClient (HttpClient $client)
     {
         $this->client = $client;
+    }
+
+    protected function initClient ()
+    {
+        $this->client = new HttpClient();
     }
 }
