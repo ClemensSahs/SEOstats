@@ -1,8 +1,8 @@
 <?php
 
-namespace SEOstatsV3Test\Model;
+namespace SeoStatsV3Test\Model;
 
-use SEOstatsV3Test\AbstractSeoStatsTestCase;
+use SeoStatsV3Test\AbstractSeoStatsTestCase;
 
 abstract class AbstractModelTestCase extends AbstractSeoStatsTestCase
 {

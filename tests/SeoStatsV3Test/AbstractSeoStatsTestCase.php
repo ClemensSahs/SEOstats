@@ -1,6 +1,6 @@
 <?php
 
-namespace SEOstatsV3Test;
+namespace SeoStatsV3Test;
 
 use ReflectionClass;
 

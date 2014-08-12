@@ -1,6 +1,6 @@
 <?php
 
-namespace SEOstatsV3Test\Model;
+namespace SeoStatsV3Test\Model;
 
 use SeoStats\V3\Model\Url;
 

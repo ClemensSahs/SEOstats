@@ -1,6 +1,6 @@
 <?php
 
-namespace SEOstatsV3Test\HttpAdapter;
+namespace SeoStatsV3Test\HttpAdapter;
 
 use SeoStatsV3Test\AbstractSeoStatsTestCase;
 
