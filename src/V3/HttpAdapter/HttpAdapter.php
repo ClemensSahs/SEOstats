@@ -19,7 +19,7 @@ class HttpAdapter implements HttpAdapterInterface
      */
     protected $client;
 
-    protected $requestVariable;
+    protected $requestVariable = array();
     protected $requestHttpMethod;
     protected $requestUrl;
     protected $requestHeader;
@@ -27,13 +27,13 @@ class HttpAdapter implements HttpAdapterInterface
     protected $requestAutoClean = true;
 
 
-    public function __construct($baseUrl = null, array $baseVariable = array())
+    public function __construct($baseUrl = null, array $baseVariable = null)
     {
         if ($baseUrl) {
-            $this->setBaseUrl($baserUrl);
+            $this->setBaseUrl($baseUrl);
         }
         if ($baseVariable) {
-            $this->setBaseUrl($baseVariable);
+            $this->setBaseVariable($baseVariable);
         }
     }
 
@@ -134,10 +134,10 @@ class HttpAdapter implements HttpAdapterInterface
     /**
      * @param string
      */
-    public function getBaseUrl($url)
+    public function getBaseUrl()
     {
         $client = $this->getClient();
-        return $client->setBaseUrl($url);
+        return $client->getBaseUrl(false);
     }
 
     public function send()
