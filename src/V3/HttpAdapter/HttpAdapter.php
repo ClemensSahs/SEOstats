@@ -3,6 +3,7 @@
 namespace SeoStats\V3\HttpAdapter;
 
 use Guzzle\Http\Client as HttpClient;
+use SeoStats\V3\HttpAdapter\Exception\MethodeIsNotAllowedException;
 
 class HttpAdapter implements HttpAdapterInterface
 {
@@ -19,16 +20,20 @@ class HttpAdapter implements HttpAdapterInterface
      */
     protected $client;
 
-    protected $requestVariable = array();
+    protected $requestAutoClean = true;
+
+    // cleanable
+    protected $requestVariable;
     protected $requestHttpMethod;
     protected $requestUrl;
     protected $requestHeader;
     protected $requestBody;
-    protected $requestAutoClean = true;
 
 
     public function __construct($baseUrl = null, array $baseVariable = null)
     {
+        $this->clean();
+
         if ($baseUrl) {
             $this->setBaseUrl($baseUrl);
         }
@@ -60,7 +65,11 @@ class HttpAdapter implements HttpAdapterInterface
 
     public function clean()
     {
-
+        $this->requestVariable = array();
+        $this->requestHttpMethod = self::HTTP_METHOD_GET;
+        $this->requestUrl = null;
+        $this->requestHeader = array();
+        $this->requestBody = null;
     }
 
     public function getUrl()
@@ -81,8 +90,8 @@ class HttpAdapter implements HttpAdapterInterface
 
     public function setHttpMethod($httpMethod)
     {
-        if (in_array($httpMethod, $allowedMethode)) {
-            throw new \RuntimeMethodeIsNotAllowed();
+        if (! in_array($httpMethod, $this->allowedMethods)) {
+            throw new MethodeIsNotAllowedException();
         }
         $this->requestHttpMethod = $httpMethod;
         return $this;
@@ -144,7 +153,7 @@ class HttpAdapter implements HttpAdapterInterface
     {
         $client = $this->getClient();
 
-        $urlArray = array($this->getUrl, $this->getVariable());
+        $urlArray = array($this->getUrl(), $this->getVariable());
 
         $request = $client->createRequest($this->getHttpMethod(),
                                           $urlArray,
@@ -170,6 +179,16 @@ class HttpAdapter implements HttpAdapterInterface
     protected function setClient (HttpClient $client)
     {
         $this->client = $client;
+    }
+
+    public function getBody ()
+    {
+        return $this->requestBody;
+    }
+
+    public function setBody ($body)
+    {
+        $this->requestBody = $body;
     }
 
     protected function initClient ()
