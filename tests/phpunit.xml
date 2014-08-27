@@ -17,10 +17,6 @@
         <testsuite name="SEOStats Version 3Test Suite">
             <directory>./SEOstatsV3Test</directory>
         </testsuite>
-
-        <testsuite name="SEOStats Test Suite">
-            <directory>./SEOstatsTest</directory>
-        </testsuite>
     </testsuites>
 
     <groups>
