@@ -14,8 +14,12 @@
 >
 
     <testsuites>
-        <testsuite name="SEOStats Version 3Test Suite">
-            <directory>./SEOstatsV3Test</directory>
+        <testsuite name="SEOStats Test Suite">
+            <directory>./SEOstatsTest</directory>
+        </testsuite>
+
+        <testsuite name="SeoStats Version 3Test Suite">
+            <directory>./SeoStatsV3Test</directory>
         </testsuite>
     </testsuites>
 
