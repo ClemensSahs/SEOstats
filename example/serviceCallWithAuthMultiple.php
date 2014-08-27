@@ -15,4 +15,4 @@ $pageListObject = $seoStats->createPageListObject(array_keys($authData));
 $seoStats->setConfig('google-webmastertools-array', $authData);
 
 $backlinksResult = $seoStats->get('google-backlinks-webmastertools', $pageListObject); // n calls
-$backlinksResult = $seoStats->getGoogleBacklinksWebmastertools, $pageListObject); // no request calls
+$backlinksResult = $seoStats->getGoogleBacklinksWebmastertools($pageListObject); // no request calls
