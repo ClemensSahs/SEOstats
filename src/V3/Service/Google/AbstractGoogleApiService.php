@@ -2,7 +2,6 @@
 
 namespace SeoStats\V3\Service\Google;
 
-use SeoStats\V3\SeoStats;
 use SeoStats\V3\Helper\Json;
 use SeoStats\V3\Service\Config;
 use SeoStats\V3\Model\PageInterface;
@@ -21,7 +20,7 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
      */
     public function __construct(Config $config)
     {
-        $this->searchUrls = $config->get('google-search-api-url');
+        $this->setUrlFormat($config->get('google-search-api-url'));
     }
 
     /**
@@ -29,9 +28,9 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
      * @param string $url
      * @return mixed
      */
-    public function call($url)
+    public function call(PageInterface $url)
     {
-        return $this->getSearchResultsTotal($this->parseUrl($url));
+        return $this->getSearchResultsTotal($url);
     }
 
     /**
@@ -41,20 +40,25 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
      *  @param    string    $url    String, containing the query URL.
      *  @return   integer           Returns the total search result count.
      */
-    public function getSearchResultsTotal($url)
+    public function getSearchResultsTotal(PageInterface $url)
     {
         if ($this->hasCache($url)) {
             return $this->getCache($url);
         }
 
-        $res = $this->getHttpClient()->get($this->parseUrl($url))->send();
+        $this->getHttpClient()->setHttpMethod('post')
+                              ->setUrl($this->getUrlFormat());
+
+        $this->parseUrl($url);
+
+        $res = $this->getHttpClient()->send();
 
         if ($res->getStatusCode() === 200);
 
         $obj = Json::decode($res->getBody(true));
 
         return !isset($obj->responseData->cursor->estimatedResultCount)
-            ? SeoStats::NO_DATA
+            ? $this->getNoData()
             : intval($obj->responseData->cursor->estimatedResultCount);
     }
 

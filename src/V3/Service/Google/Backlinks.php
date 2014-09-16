@@ -8,6 +8,9 @@ class Backlinks extends AbstractGoogleApiService
 {
     public function parseUrl(PageInterface $url)
     {
-        return sprint($this->getUrlFormat(), urlencode("link:{$url}"), 1);
+        $this->getHttpAdapter()->setVariable(array(
+            'google_query'=> urlencode("link:" . $url->getUrl()),
+            'google_rsz'=> 1
+        ));
     }
 }
