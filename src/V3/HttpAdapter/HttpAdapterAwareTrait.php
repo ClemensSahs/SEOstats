@@ -14,7 +14,7 @@ trait HttpAdapterAwareTrait
      *
      * @param HttpAdapter $httpAdapter
      */
-    protected function setHttpAdapter(HttpAdapter $httpAdapter)
+    public function setHttpAdapter(HttpAdapter $httpAdapter)
     {
         $this->httpAdapter = $httpAdapter;
     }
@@ -23,7 +23,7 @@ trait HttpAdapterAwareTrait
      *
      * @return HttpAdapter
      */
-    protected function getHttpAdapter()
+    public function getHttpAdapter()
     {
         return $this->httpAdapter;
     }
