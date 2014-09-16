@@ -2,9 +2,11 @@
 
 namespace SeoStats\V3\Service;
 
-use SeoStats\V3\Service\CacheAdapter;
+use SeoStats\V3\Service\Cache\AbstractCacheAdapter;
+use SeoStats\V3\Service\Cache;
 
-abstract class AbstractCachableService extends AbstractService
+
+trait CachableServiceTrait
 {
     /**
      *
@@ -55,6 +57,10 @@ abstract class AbstractCachableService extends AbstractService
      */
     protected function getCacheAdapter()
     {
+        if ($this->cacheAdapter === null) {
+            $this->cacheAdapter = new Cache\Driver\Disabled();
+        }
+
         return $this->cacheAdapter;
     }
 

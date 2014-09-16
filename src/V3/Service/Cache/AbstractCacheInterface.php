@@ -4,22 +4,22 @@ namespace SeoStats\V3\Service\Cache;
 
 use SeoStats\V3\Service\AbstractService;
 
-abstract class AbstractCacheAdapter extends AbstractService
+abstract class AbstractCacheInterface
 {
     /**
      * @param string $key
      * @return bool
      */
-    abstract public function hasCache($key);
+    public function has($key);
     /**
      * @param string $key
      * @return mixed
      */
-    abstract public function getCache($key);
+    public function get($key);
 
     /**
      * @param string $key
      * @param mixed $value
      */
-    abstract public function setCache($key, $value);
+    public function set($key, $value);
 }
