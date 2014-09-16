@@ -12,7 +12,7 @@ class Config
     public function __construct()
     {
         $this->config = array(
-            'google-search-api-url'=>'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz=%2$s&q=%1$s'
+            'google-search-api-url'=>'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz={google_rsz}&q={google_query}'
         );
     }
 
