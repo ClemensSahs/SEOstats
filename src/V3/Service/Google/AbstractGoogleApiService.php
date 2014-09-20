@@ -53,7 +53,9 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
 
         $res = $this->getHttpClient()->send();
 
-        if ($res->getStatusCode() === 200);
+        if ($res->getStatusCode() !== 200) {
+            return $this->getNoData();
+        };
 
         $obj = Json::decode($res->getBody(true));
 

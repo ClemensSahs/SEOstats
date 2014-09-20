@@ -8,6 +8,10 @@ use SeoStats\V3\Module\Page;
 class GoogleApiServiceTest extends AbstractGoogleTestCase
 {
 
+    protected $mockedClient = null;
+    protected $mockedConfig = null;
+    protected $mockedCache = null;
+
     public function setup()
     {
         parent::setup();
@@ -52,39 +56,52 @@ class GoogleApiServiceTest extends AbstractGoogleTestCase
      * @group service
      * @group service-google
      */
+    public function testUrlFormatSetterAndGetter ()
+    {
+        $sut = $this->helperCreateSut();
+
+        $this->assertEquals('test-url', $sut->getUrlFormat());
+
+        $sut->setUrlFormat('foo-url');
+        $this->assertEquals('foo-url', $sut->getUrlFormat());
+    }
+
+    /**
+     * @group v3
+     * @group service
+     * @group service-google
+     */
     public function testGetSearchResultsTotal ()
     {
         $sut = $this->helperCreateSut();
 
-        $cache = $this->getMock('\SeoStats\V3\Service\Cache\AbstractCacheAdapter');
-        $cache->expects($this->once())
+        $this->mockedCache = $this->getMock('\SeoStats\V3\Service\Cache\AbstractCacheAdapter');
+        $this->mockedCache->expects($this->once())
                ->method('has')
                ->will($this->returnValue(false));
-        $sut->setCacheAdapter($cache);
+        $sut->setCacheAdapter($this->mockedCache);
 
-        $client = $this->getMock('\SeoStats\V3\HttpAdapter\HttpAdapterInterface');
-        $client->expects($this->once())
+        $this->mockedClient = $this->getMock('\SeoStats\V3\HttpAdapter\HttpAdapterInterface');
+        $this->mockedClient->expects($this->once())
               ->method('has')
               ->will($this->returnValue(false));
+        $sut->setHttpAdapter($this->mockedClient);
 
         $page = new Page('github.com');
         $result = $sut->getSearchResultsTotal($page);
-
-
-
     }
 
 
     public function helperCreateSut ()
     {
-        $config = $this->getMock('\SeoStats\V3\Service\Config');
-        $config->expects($this->once())
+        $this->mockedConfig = $this->getMock('\SeoStats\V3\Service\Config');
+        $this->mockedConfig->expects($this->once())
                ->method('get')
                ->with('google-search-api-url')
                ->will($this->returnValue('test-url'));
 
         return $this->getMockBuilder('\SeoStats\V3\Service\Google\AbstractGoogleApiService')
-                    ->setConstructorArgs(array($config))
+                    ->setConstructorArgs(array($this->mockedConfig))
                     ->getMockForAbstractClass();
     }
 }
