@@ -12,6 +12,6 @@ abstract class AbstractService
 
     public function getNoData()
     {
-        return SeoStats::NO_DATA;
+        return SeoStats::$NO_DATA;
     }
 }
