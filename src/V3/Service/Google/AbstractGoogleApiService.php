@@ -46,12 +46,12 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
             return $this->getCache($url);
         }
 
-        $this->getHttpClient()->setHttpMethod('post')
-                              ->setUrl($this->getUrlFormat());
+        $this->getHttpAdapter()->setHttpMethod('post')
+                               ->setUrl($this->getUrlFormat());
 
         $this->parseUrl($url);
 
-        $res = $this->getHttpClient()->send();
+        $res = $this->getHttpAdapter()->send();
 
         if ($res->getStatusCode() !== 200) {
             return $this->getNoData();

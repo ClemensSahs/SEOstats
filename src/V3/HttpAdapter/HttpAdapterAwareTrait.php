@@ -14,7 +14,7 @@ trait HttpAdapterAwareTrait
      *
      * @param HttpAdapter $httpAdapter
      */
-    public function setHttpAdapter(HttpAdapter $httpAdapter)
+    public function setHttpAdapter(HttpAdapterInterface $httpAdapter)
     {
         $this->httpAdapter = $httpAdapter;
     }

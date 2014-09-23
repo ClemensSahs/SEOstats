@@ -120,6 +120,8 @@ class HttpAdapter implements HttpAdapterInterface
     {
         $client = $this->getClient();
         $client->setConfig($variables);
+
+        return $this;
     }
 
     /**
@@ -138,6 +140,8 @@ class HttpAdapter implements HttpAdapterInterface
     {
         $client = $this->getClient();
         $client->setBaseUrl($url);
+
+        return $this;
     }
 
     /**
@@ -179,6 +183,8 @@ class HttpAdapter implements HttpAdapterInterface
     protected function setClient (HttpClient $client)
     {
         $this->client = $client;
+
+        return $this;
     }
 
     public function getBody ()
@@ -189,6 +195,8 @@ class HttpAdapter implements HttpAdapterInterface
     public function setBody ($body)
     {
         $this->requestBody = $body;
+
+        return $this;
     }
 
     protected function initClient ()

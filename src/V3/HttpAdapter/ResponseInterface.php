@@ -8,4 +8,5 @@ interface ResponseInterface
 {
     public function getBody();
     public function getBodyJson();
+    public function getStatusCode();
 }

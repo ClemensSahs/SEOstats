@@ -14,7 +14,7 @@ class Response implements ResponseInterface
     /**
      * @parms ResponseObject
      */
-    public function construct(ResponseObject $responseObject)
+    public function __construct(ResponseObject $responseObject)
     {
         $this->responseObject = $responseObject;
     }
@@ -25,5 +25,9 @@ class Response implements ResponseInterface
 
     public function getBodyFromJson () {
         return Json::decode($this->getBody());
+    }
+
+    public function getStatusCode () {
+        return $this->responseObject->getStatusCode();
     }
 }
