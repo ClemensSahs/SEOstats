@@ -2,7 +2,6 @@
 
 namespace SeoStats\V3\Service;
 
-use SeoStats\V3\Service\Cache\AbstractCacheAdapter;
 use SeoStats\V3\Service\Cache;
 
 
@@ -45,7 +44,7 @@ trait CachableServiceTrait
     /**
      * @param CacheAdapter $cacheAdapter
      */
-    public function setCacheAdapter(CacheAdapter $cacheAdapter)
+    public function setCacheAdapter(Cache\CacheAdapterInterface $cacheAdapter)
     {
         $this->cacheAdapter = $cacheAdapter;
     }

@@ -2,9 +2,7 @@
 
 namespace SeoStats\V3\Service\Cache;
 
-use SeoStats\V3\Service\AbstractService;
-
-abstract class AbstractCacheInterface
+interface CacheAdapterInterface
 {
     /**
      * @param string $key
