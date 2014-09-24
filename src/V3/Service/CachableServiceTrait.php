@@ -56,8 +56,8 @@ trait CachableServiceTrait
      */
     protected function getCacheAdapter()
     {
-        if ($this->cacheAdapter === null) {
-            $this->cacheAdapter = new Cache\Driver\Disabled();
+        if (! $this->hasCacheAdapter()) {
+            $this->cacheAdapter = new Cache\Disabled();
         }
 
         return $this->cacheAdapter;

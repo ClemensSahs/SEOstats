@@ -10,25 +10,26 @@ class Local extends AbstractCacheAdapter
      * @param string $key
      * @return bool
      */
-    public function hasCache($key)
+    public function has($key)
     {
-        return isset($cache[$key]);
+        return isset($this->cache[$key]);
     }
     /**
      * @param string $key
      * @return mixed
      */
-    public function getCache($key)
+    public function get($key)
     {
-        return $cache[$key];
+        return $this->cache[$key];
     }
 
     /**
      * @param string $key
      * @param mixed $value
      */
-    public function setCache($key, $value)
+    public function set($key, $value)
     {
-        $cache[$key] = $value;
+        $this->cache[$key] = $value;
+        return true;
     }
 }

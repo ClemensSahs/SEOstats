@@ -2,13 +2,13 @@
 
 namespace SeoStats\V3\Service\Cache;
 
-class SQLite extends AbstractCacheAdapter
+class Mysql extends AbstractCacheAdapter
 {
     /**
      * @param string $key
      * @return bool
      */
-    public function hasCache($key)
+    public function has($key)
     {
         throw new \RuntimeException('currently no logic');
     }
@@ -16,7 +16,7 @@ class SQLite extends AbstractCacheAdapter
      * @param string $key
      * @return mixed
      */
-    public function getCache($key)
+    public function get($key)
     {
         throw new \RuntimeException('currently no logic');
     }
@@ -25,7 +25,7 @@ class SQLite extends AbstractCacheAdapter
      * @param string $key
      * @param mixed $value
      */
-    public function setCache($key, $value)
+    public function set($key, $value)
     {
         throw new \RuntimeException('currently no logic');
     }
