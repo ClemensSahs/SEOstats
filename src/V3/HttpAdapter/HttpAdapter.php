@@ -52,7 +52,11 @@ class HttpAdapter implements HttpAdapterInterface
      */
     protected $requestBody;
 
-
+    /**
+     *
+     * @param string $baseUrl
+     * @param array $baseVariable
+     */
     public function __construct($baseUrl = null, array $baseVariable = null)
     {
         $this->clean();
@@ -65,12 +69,22 @@ class HttpAdapter implements HttpAdapterInterface
         }
     }
 
+    /**
+     *
+     * @param string
+     * @return HttpAdapter
+     */
     public function setUrl($url)
     {
         $this->requestUrl = $url;
         return $this;
     }
 
+    /**
+     *
+     * @param bool
+     * @return HttpAdapter
+     */
     public function setAutoClean($autoclean = true)
     {
         $this->requestAutoClean = (bool) $autoclean;
@@ -95,17 +109,30 @@ class HttpAdapter implements HttpAdapterInterface
         $this->requestBody = null;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getUrl()
     {
         return $this->requestUrl;
     }
 
+    /**
+     *
+     * @param array $variables
+     * @return HttpAdapter
+     */
     public function setVariable($variables)
     {
         $this->requestVariable = $variables;
         return $this;
     }
 
+    /**
+     *
+     * @return array
+     */
     public function getVariable()
     {
         return $this->requestVariable;
@@ -128,19 +155,30 @@ class HttpAdapter implements HttpAdapterInterface
         return $this->requestHttpMethod;
     }
 
+    /**
+     *
+     * @param array $variables
+     * @return HttpAdapter
+     */
     public function setHeader(array $header)
     {
         $this->requestHeader = $header;
         return $this;
     }
 
+    /**
+     *
+     * @return array
+     */
     public function getHeader()
     {
         return $this->requestHeader;
     }
 
     /**
-     * @param array
+     *
+     * @param array $variables
+     * @return HttpAdapter
      */
     public function setBaseVariable( array $variables)
     {
@@ -160,7 +198,9 @@ class HttpAdapter implements HttpAdapterInterface
     }
 
     /**
-     * @param string
+     *
+     * @param string $url
+     * @return HttpAdapter
      */
     public function setBaseUrl($url)
     {
@@ -179,6 +219,10 @@ class HttpAdapter implements HttpAdapterInterface
         return $client->getBaseUrl(false);
     }
 
+    /**
+     *
+     * @return ResponseInterface
+     */
     public function send()
     {
         $client = $this->getClient();
@@ -197,6 +241,10 @@ class HttpAdapter implements HttpAdapterInterface
         return $response;
     }
 
+    /**
+     *
+     * @return HttpClient
+     */
     protected function getClient ()
     {
         if (! isset($this->client)) {
@@ -206,6 +254,11 @@ class HttpAdapter implements HttpAdapterInterface
         return $this->client;
     }
 
+    /**
+     *
+     * @param HttpClient
+     * @return HttpAdapter
+     */
     protected function setClient (HttpClient $client)
     {
         $this->client = $client;
@@ -213,11 +266,20 @@ class HttpAdapter implements HttpAdapterInterface
         return $this;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getBody ()
     {
         return $this->requestBody;
     }
 
+    /**
+     *
+     * @param string
+     * @return HttpAdapter
+     */
     public function setBody ($body)
     {
         $this->requestBody = $body;
