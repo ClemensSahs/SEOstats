@@ -6,13 +6,13 @@ trait HttpAdapterAwareTrait
 {
     /**
      *
-     * @var HttpAdapter
+     * @var HttpAdapterInterface
      */
     protected $httpAdapter;
 
     /**
      *
-     * @param HttpAdapter $httpAdapter
+     * @param HttpAdapterInterface $httpAdapter
      */
     public function setHttpAdapter(HttpAdapterInterface $httpAdapter)
     {
@@ -21,7 +21,7 @@ trait HttpAdapterAwareTrait
 
     /**
      *
-     * @return HttpAdapter
+     * @return HttpAdapterInterface
      */
     public function getHttpAdapter()
     {
