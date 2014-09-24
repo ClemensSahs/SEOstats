@@ -22,14 +22,16 @@ class Response implements ResponseInterface
     /**
      * @return string
      */
-    public function getBody () {
+    public function getBody ()
+    {
         return $this->responseObject->getBody(true);
     }
 
     /**
      * @return string
      */
-    public function getBodyFromJson () {
+    public function getBodyFromJson ()
+    {
         return Json::decode($this->getBody());
     }
 
