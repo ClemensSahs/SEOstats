@@ -7,11 +7,13 @@ use Guzzle\Http\Message\Response as ResponseObject;
 class Response implements ResponseInterface
 {
     /**
+     *
      * @var ResponseObject
      */
     protected $responseObject;
 
     /**
+     *
      * @param ResponseObject
      */
     public function __construct(ResponseObject $responseObject)
@@ -20,6 +22,7 @@ class Response implements ResponseInterface
     }
 
     /**
+     *
      * @return string
      */
     public function getBody ()
@@ -28,6 +31,7 @@ class Response implements ResponseInterface
     }
 
     /**
+     *
      * @return string
      */
     public function getBodyFromJson ()
@@ -36,6 +40,7 @@ class Response implements ResponseInterface
     }
 
     /**
+     *
      * @return integer
      */
     public function getStatusCode () {
