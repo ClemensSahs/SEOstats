@@ -20,13 +20,36 @@ class HttpAdapter implements HttpAdapterInterface
      */
     protected $client;
 
+    /**
+     * @var bool
+     */
     protected $requestAutoClean = true;
 
-    // cleanable
+    // cleanable property
+
+    /**
+     * @var array
+     */
     protected $requestVariable;
+
+    /**
+     * @var string
+     */
     protected $requestHttpMethod;
+
+    /**
+     * @var string
+     */
     protected $requestUrl;
+
+    /**
+     * @var array
+     */
     protected $requestHeader;
+
+    /**
+     * @var string
+     */
     protected $requestBody;
 
 
@@ -88,6 +111,9 @@ class HttpAdapter implements HttpAdapterInterface
         return $this->requestVariable;
     }
 
+    /**
+     * @param string post|get|put|delete
+     */
     public function setHttpMethod($httpMethod)
     {
         if (! in_array($httpMethod, $this->allowedMethods)) {
