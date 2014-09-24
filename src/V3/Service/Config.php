@@ -11,9 +11,9 @@ class Config
      */
     public function __construct()
     {
-        $this->config = array(
+        $this->setArray(array(
             'google-search-api-url'=>'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz={google_rsz}&q={google_query}'
-        );
+        ));
     }
 
     /**
@@ -24,6 +24,18 @@ class Config
     public function set($key, $value)
     {
         $this->config[$key] = $value;
+    }
+
+    /**
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function setArray($array)
+    {
+        foreach ( $array as $key=>$value) {
+            $this->set($key, $value);
+        }
     }
 
     /**
