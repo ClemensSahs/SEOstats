@@ -34,7 +34,7 @@ class Response implements ResponseInterface
      *
      * @return string
      */
-    public function getBodyFromJson ()
+    public function getBodyJson ()
     {
         return Json::decode($this->getBody());
     }

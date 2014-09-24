@@ -145,48 +145,65 @@ class GoogleApiServiceTest extends AbstractGoogleTestCase
     {
         $mockedResponse = $this->getMock('\SeoStats\V3\HttpAdapter\ResponseInterface');
 
+        $response = (object) array(
+            'responseData' => (object) array (
+                'cursor'=> (object) array(
+                    'estimatedResultCount'=>'10'
+                )
+            )
+        );
         $validResponse = clone $mockedResponse;
         $validResponse->expects($this->any())
                       ->method('getStatusCode')
                       ->will($this->returnValue(200));
         $validResponse->expects($this->any())
                       ->method('getBody')
-                      ->will($this->returnValue(json_encode(array(
-                          'responseData' => array (
-                              'cursor'=>array(
-                                  'estimatedResultCount'=>'10'
-                              )
-                          )
-                      ))));
+                      ->will($this->returnValue(json_encode($response)));
+        $validResponse->expects($this->any())
+                      ->method('getBodyJson')
+                      ->will($this->returnValue($response));
 
+        $response = '';
         $invalidResponse = clone $mockedResponse;
         $invalidResponse->expects($this->any())
                         ->method('getStatusCode')
                         ->will($this->returnValue(200));
         $invalidResponse->expects($this->any())
                         ->method('getBody')
-                        ->will($this->returnValue(''));
+                        ->will($this->returnValue(json_encode($response)));
+        $invalidResponse->expects($this->any())
+                        ->method('getBodyJson')
+                        ->will($this->returnValue($response));
 
+
+        $response = array();
         $empty1Response = clone $mockedResponse;
         $empty1Response->expects($this->any())
                        ->method('getStatusCode')
                        ->will($this->returnValue(200));
         $empty1Response->expects($this->any())
                        ->method('getBody')
-                       ->will($this->returnValue(json_encode(array())));
+                       ->will($this->returnValue(json_encode($response)));
+        $empty1Response->expects($this->any())
+                       ->method('getBodyJson')
+                       ->will($this->returnValue($response));
 
+        $response = array(
+            'responseData' => array (
+                'cursor'=>array(
+                )
+            )
+        );
         $empty2Response = clone $mockedResponse;
         $empty2Response->expects($this->any())
                        ->method('getStatusCode')
                        ->will($this->returnValue(200));
         $empty2Response->expects($this->any())
                        ->method('getBody')
-                       ->will($this->returnValue(json_encode(array(
-                           'responseData' => array (
-                               'cursor'=>array(
-                               )
-                           )
-                       ))));
+                       ->will($this->returnValue(json_encode($response)));
+        $empty2Response->expects($this->any())
+                       ->method('getBodyJson')
+                       ->will($this->returnValue($response));
 
         $wrongStatusCodeResponse = clone $mockedResponse;
         $wrongStatusCodeResponse->expects($this->any())

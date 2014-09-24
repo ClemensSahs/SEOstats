@@ -67,7 +67,7 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
     public function parseResponseForGetSearchResultsTotal(ResponseInterface $responseObject)
     {
         if ($responseObject->getStatusCode() === 200) {
-            $obj = Json::decode($responseObject->getBody(true));
+            $obj = $responseObject->getBodyJson();
 
             if (isset($obj->responseData->cursor->estimatedResultCount)) {
                 return intval($obj->responseData->cursor->estimatedResultCount);
