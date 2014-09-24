@@ -5,6 +5,7 @@ namespace SeoStats\V3\Service\Google;
 use SeoStats\V3\Helper\Json;
 use SeoStats\V3\Service\Config;
 use SeoStats\V3\Model\PageInterface;
+use SeoStats\V3\HttpAdapter\ResponseInterface;
 
 abstract class AbstractGoogleApiService extends AbstractGoogleService
 {
@@ -51,17 +52,29 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
 
         $this->parseUrl($url);
 
-        $res = $this->getHttpAdapter()->send();
+        $responseObject = $this->getHttpAdapter()->send();
 
-        if ($res->getStatusCode() !== 200) {
-            return $this->getNoData();
-        };
+        return $this->parseResponseForGetSearchResultsTotal($responseObject);
+    }
 
-        $obj = Json::decode($res->getBody(true));
+    /**
+     *  Returns total amount of results for any Google search,
+     *  requesting the deprecated Websearch API.
+     *
+     *  @param    ResponseInterface $url    String, containing the query URL.
+     *  @return   string           Returns the total search result count.
+     */
+    public function parseResponseForGetSearchResultsTotal(ResponseInterface $responseObject)
+    {
+        if ($responseObject->getStatusCode() === 200) {
+            $obj = Json::decode($responseObject->getBody(true));
 
-        return !isset($obj->responseData->cursor->estimatedResultCount)
-            ? $this->getNoData()
-            : intval($obj->responseData->cursor->estimatedResultCount);
+            if (isset($obj->responseData->cursor->estimatedResultCount)) {
+                return intval($obj->responseData->cursor->estimatedResultCount);
+            }
+        }
+
+        return $this->getNoData();
     }
 
     /**
