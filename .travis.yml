@@ -11,7 +11,8 @@ before_script:
 
 script:
   - cd ./tests/
-  - ../vendor/bin/phpunit
+  - phpunit  --exclude-group v3
+  - ../vendor/bin/phpunit --group v3
 #  - ./vendor/bin/phpcs -n --standard=PSR2 ./SEOstats/ ./tests/
 
 after_script:
