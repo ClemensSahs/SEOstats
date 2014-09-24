@@ -7,7 +7,7 @@ php:
 
 before_install:
   - wget http://getcomposer.org/composer.phar
-  - php composer.phar install --no-dev
+  - php composer.phar install --dev
 
 install:
   - wget https://phar.phpunit.de/phpunit-3.7.37.phar -O phpunit_3.phar
