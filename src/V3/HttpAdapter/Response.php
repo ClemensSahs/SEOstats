@@ -12,22 +12,31 @@ class Response implements ResponseInterface
     protected $responseObject;
 
     /**
-     * @parms ResponseObject
+     * @param ResponseObject
      */
     public function __construct(ResponseObject $responseObject)
     {
         $this->responseObject = $responseObject;
     }
 
+    /**
+     * @return string
+     */
     public function getBody () {
         return $this->responseObject->getBody(true);
     }
 
+    /**
+     * @return string
+     */
     public function getBodyFromJson () {
         return Json::decode($this->getBody());
     }
 
+    /**
+     * @return integer
+     */
     public function getStatusCode () {
-        return $this->responseObject->getStatusCode();
+        return (integer) $this->responseObject->getStatusCode();
     }
 }
