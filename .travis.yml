@@ -5,13 +5,20 @@ php:
   - 5.6
   - hhvm
 
-before_script:
+before_install:
   - wget http://getcomposer.org/composer.phar
   - php composer.phar install --dev
 
+install:
+  - wget https://phar.phpunit.de/phpunit-3.7.37.phar -O phpunit_3.phar
+  - chmod +x phpunit_3.phar
+
+before_script:
+  - cd ./tests/
+
 script:
   - cd ./tests/
-  - phpunit  --exclude-group v3
+  - php phpunit_3.phar --exclude-group v3
   - ../vendor/bin/phpunit --group v3
 #  - ./vendor/bin/phpcs -n --standard=PSR2 ./SEOstats/ ./tests/
 
