@@ -121,7 +121,7 @@ class Url
         $this->isValid = $this->validUrl();
     }
 
-    protected function parseUrl()
+    protected function parseUrlToArray()
     {
         $url = preg_replace('#^([^:/?]+://)?#', 'http://', $this->originUrl);
         $parsedUrl = @parse_url($url);
@@ -133,6 +133,13 @@ class Url
                 'path'=>false
             );
         }
+
+        return $parsedUrl;
+    }
+
+    protected function parseUrl()
+    {
+        $parsedUrl = $this->parseUrlToArray();
 
         if (empty($parsedUrl['host'])) {
             $parsedUrl['host'] = false;
