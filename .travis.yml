@@ -11,14 +11,16 @@ before_install:
 
 install:
   - wget https://phar.phpunit.de/phpunit-3.7.37.phar -O phpunit_3.phar
+  - wget https://phar.phpunit.de/phpunit.phar -O phpunit_4.phar
   - chmod +x phpunit_3.phar
+  - chmod +x phpunit_4.phar
 
 before_script:
   - cd ./tests/
 
 script:
   - php ../phpunit_3.phar --exclude-group v3
-  - ../vendor/bin/phpunit --group v3
+  - php ../phpunit_4.phar --group v3
 #  - ./vendor/bin/phpcs -n --standard=PSR2 ./SEOstats/ ./tests/
 
 after_script:
