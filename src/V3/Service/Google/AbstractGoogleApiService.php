@@ -21,6 +21,11 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
      */
     public function __construct(Config $config)
     {
+        $this->initService($config);
+    }
+
+    public function initService(Config $config)
+    {
         $this->setUrlFormat($config->get('google-search-api-url'));
     }
 
@@ -47,7 +52,7 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
             return $this->getCache($url);
         }
 
-        $this->getHttpAdapter()->setHttpMethod('post')
+        $this->getHttpAdapter()->setHttpMethod('get')
                                ->setUrl($this->getUrlFormat());
 
         $this->parseUrl($url);
