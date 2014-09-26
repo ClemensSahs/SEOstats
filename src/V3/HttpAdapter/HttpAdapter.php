@@ -238,7 +238,7 @@ class HttpAdapter implements HttpAdapterInterface
 
         $this->runAutoClean();
 
-        return $response;
+        return new Response($response);
     }
 
     /**

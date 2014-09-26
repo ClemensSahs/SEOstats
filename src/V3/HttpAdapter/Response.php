@@ -2,7 +2,8 @@
 
 namespace SeoStats\V3\HttpAdapter;
 
-use Guzzle\Http\Message\Response as ResponseObject;
+use Guzzle\Http\Message\MessageInterface as ResponseObject;
+use SeoStats\V3\Helper\Json as Json;
 
 class Response implements ResponseInterface
 {
@@ -45,5 +46,13 @@ class Response implements ResponseInterface
      */
     public function getStatusCode () {
         return (integer) $this->responseObject->getStatusCode();
+    }
+
+    /**
+     *
+     * @return ResponseObject
+     */
+    public function getResponseObject () {
+        return $this->responseObject;
     }
 }

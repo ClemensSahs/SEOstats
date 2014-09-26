@@ -213,7 +213,8 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
         $result = $this->SUT->send();
 
         if ($assert['status'] === true) {
-            $this->assertInstanceOf('\Guzzle\Http\Message\MessageInterface', $result);
+            $this->assertInstanceOf('\SeoStats\V3\HttpAdapter\ResponseInterface', $result);
+            $this->assertInstanceOf('\Guzzle\Http\Message\MessageInterface', $result->getResponseObject());
         }
     }
 
