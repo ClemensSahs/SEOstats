@@ -4,6 +4,9 @@ namespace SeoStats\V3\Helper;
 
 class Json
 {
+    const METODE_ENCODE = 'encode';
+    const METODE_DECODE = 'decode';
+
     /**
      *
      * @param string $value
@@ -11,9 +14,7 @@ class Json
     public static function decode($value, $assoc = false)
     {
         $data = json_decode((string) $value, (bool) $assoc);
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \RuntimeException('Unable decode content from JSON: ' . json_last_error());
-        }
+        static::guardJsonError(static::METODE_DECODE);
 
         return $data ?: new \stdClass();
     }
@@ -25,10 +26,24 @@ class Json
     public static function encode($value)
     {
         $data = json_encode($value);
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \RuntimeException('Unable encode content into JSON: ' . json_last_error());
-        }
+        static::guardJsonError(static::METODE_ENCODE);
 
         return $data ?: "{}";
+    }
+
+    private static function guardJsonError($jsonMethode)
+    {
+        $errorCode = json_last_error();
+        if (JSON_ERROR_NONE == $errorCode) {
+            return;
+        }
+
+        $msg = sprintf('Unable %s content into JSON: %s (code: %s)',
+                                            $jsonMethode,
+                                            json_last_error_msg(),
+                                            $errorCode
+                                    );
+
+        throw new \RuntimeException($msg);
     }
 }
