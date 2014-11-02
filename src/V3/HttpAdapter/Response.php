@@ -2,7 +2,7 @@
 
 namespace SeoStats\V3\HttpAdapter;
 
-use Guzzle\Http\Message\MessageInterface as ResponseObject;
+use Guzzle\Http\Message\Response as ResponseObject;
 use SeoStats\V3\Helper\Json as Json;
 
 class Response implements ResponseInterface
