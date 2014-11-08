@@ -287,6 +287,9 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
             array(
                 'url'         => 'http://www.github.com',
                 'variable'    => array('foo'=>'bar'),
+                'options'    => array(
+                    'allow_redirects'=>false
+                ),
             ),
             array(
                 'status'      => true,
@@ -295,6 +298,7 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
                 'options' => array(
                     'headers' => array(),
                     'body' => "",
+                    'allow_redirects'=>false
                 )
             )
         );
