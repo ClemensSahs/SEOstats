@@ -2,8 +2,6 @@
 
 namespace SeoStats\V3\HttpAdapter;
 
-use Guzzle\Http\Client as HttpClient;
-
 interface HttpAdapterInterface
 {
     const HTTP_METHOD_GET    = 'get';
@@ -30,15 +28,12 @@ interface HttpAdapterInterface
 
     public function getHeader();
 
+    public function getOptions();
+
     /**
      * @param array
      */
     public function setBaseVariable( array $variables);
-
-    /**
-     * @param string
-     */
-    public function setBaseUrl($url);
 
     public function send();
 }

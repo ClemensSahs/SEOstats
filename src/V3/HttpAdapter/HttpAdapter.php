@@ -2,7 +2,7 @@
 
 namespace SeoStats\V3\HttpAdapter;
 
-use Guzzle\Http\Client as HttpClient;
+use GuzzleHttp\Client as HttpClient;
 use SeoStats\V3\HttpAdapter\Exception\MethodeIsNotAllowedException;
 
 class HttpAdapter implements HttpAdapterInterface
@@ -24,6 +24,11 @@ class HttpAdapter implements HttpAdapterInterface
      * @var bool
      */
     protected $requestAutoClean = true;
+
+    /**
+     * @var array
+     */
+    protected $baseVariable = array();
 
     // cleanable property
 
@@ -53,17 +58,19 @@ class HttpAdapter implements HttpAdapterInterface
     protected $requestBody;
 
     /**
+     * @var array
+     */
+    protected $requestOptions;
+
+    /**
      *
      * @param string $baseUrl
      * @param array $baseVariable
      */
-    public function __construct($baseUrl = null, array $baseVariable = null)
+    public function __construct(array $baseVariable = null)
     {
         $this->clean();
 
-        if ($baseUrl) {
-            $this->setBaseUrl($baseUrl);
-        }
         if ($baseVariable) {
             $this->setBaseVariable($baseVariable);
         }
@@ -107,6 +114,7 @@ class HttpAdapter implements HttpAdapterInterface
         $this->requestUrl = null;
         $this->requestHeader = array();
         $this->requestBody = null;
+        $this->requestOptions = array();
     }
 
     /**
@@ -182,8 +190,7 @@ class HttpAdapter implements HttpAdapterInterface
      */
     public function setBaseVariable( array $variables)
     {
-        $client = $this->getClient();
-        $client->setConfig($variables);
+        $this->baseVariable = $variables;
 
         return $this;
     }
@@ -193,30 +200,29 @@ class HttpAdapter implements HttpAdapterInterface
      */
     public function getBaseVariable()
     {
-        $client = $this->getClient();
-        return $client->getConfig()->toArray();
+        return $this->baseVariable;
     }
 
     /**
      *
-     * @param string $url
+     * @param array $options
      * @return HttpAdapter
      */
-    public function setBaseUrl($url)
+    public function setOptions($options = array())
     {
-        $client = $this->getClient();
-        $client->setBaseUrl($url);
-
+        $this->requestOptions = $options;
         return $this;
     }
 
-    /**
-     * @param string
-     */
-    public function getBaseUrl()
+    public function getOptions()
     {
-        $client = $this->getClient();
-        return $client->getBaseUrl(false);
+        return array_merge(
+            array(
+                'body'=>$this->getBody(),
+                'headers'=>$this->getHeader()
+            ),
+            $this->requestOptions
+        );
     }
 
     /**
@@ -231,10 +237,9 @@ class HttpAdapter implements HttpAdapterInterface
 
         $request = $client->createRequest($this->getHttpMethod(),
                                           $urlArray,
-                                          $this->getHeader(),
-                                          $this->getBody()
+                                          $this->getOptions()
                                          );
-        $response = $request->send();
+        $response = $client->send($request);
 
         $this->runAutoClean();
 

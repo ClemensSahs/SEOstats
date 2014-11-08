@@ -14,7 +14,7 @@ class ResponseTest extends AbstractSeoStatsTestCase
     {
         parent::setup();
 
-        $this->responseObjectMocked = $this->getMockBuilder('Guzzle\Http\Message\Response')
+        $this->responseObjectMocked = $this->getMockBuilder('\GuzzleHttp\Message\ResponseInterface')
                                            ->disableOriginalConstructor()
                                            ->getMock();
 

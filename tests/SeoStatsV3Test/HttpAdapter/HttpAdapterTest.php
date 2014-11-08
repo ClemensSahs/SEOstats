@@ -22,33 +22,20 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
      */
     public function testCreateAdapter ($args, $argsMethod, $assert)
     {
-        if ($args[0] && $args[1]) {
-            $this->SUT = new HttpAdapter($args[0], $args[1]);
-        }
-        elseif ($args[0]) {
+        if (isset($args[0])) {
             $this->SUT = new HttpAdapter($args[0]);
-        }
-        elseif ($args[1]) {
-            $this->SUT = new HttpAdapter(null,$args[1]);
         }
         else {
             $this->SUT = new HttpAdapter();
         }
 
         if(isset($argsMethod[0])) {
-            $this->SUT->setBaseUrl($argsMethod[0]);
+            $this->SUT->setBaseVariable($argsMethod[0]);
         }
-        if(isset($argsMethod[1])) {
-            $this->SUT->setBaseVariable($argsMethod[1]);
-        }
-
-        // var_dump($this->SUT->getBaseUrl());
-        $this->assertEquals($assert[0], $this->SUT->getBaseUrl());
-        // var_dump($this->SUT->getVariable());
 
         $result = $this->SUT->getBaseVariable();
 
-        foreach ($assert[1] as $key=>$value) {
+        foreach ($assert[0] as $key=>$value) {
             $this->assertArrayHasKey($key, $result);
             $this->assertEquals($value, $result[$key]);
         }
@@ -174,10 +161,10 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
         $client1 = $this->helperMakeAccessable($this->SUT,'getClient',array());
         $client2 = $this->helperMakeAccessable($this->SUT,'getClient',array());
 
-        $this->helperMakeAccessable($this->SUT,'setClient',array(new \Guzzle\Http\Client()) );
+        $this->helperMakeAccessable($this->SUT,'setClient',array(new \GuzzleHttp\Client()) );
         $client3 = $this->helperMakeAccessable($this->SUT,'getClient',array());
 
-        $this->assertInstanceOf('\Guzzle\Http\Client', $client1);
+        $this->assertInstanceOf('\GuzzleHttp\Client', $client1);
         $this->assertSame($client1, $client2);
         $this->assertNotSame($client1, $client3);
     }
@@ -193,18 +180,21 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
             $this->setExpectedException($assert['status']);
         }
 
-        $mockedClient = $this->getMock('\Guzzle\Http\Client', array('createRequest'));
-        $this->mockedRequest = $this->getMock('\Guzzle\Http\Message\RequestInterface');
-        $this->mockedResponse = $this->getMock('\Guzzle\Http\Message\MessageInterface');
+        $mockedClient = $this->getMock('\GuzzleHttp\Client', array('createRequest','send'));
+        $this->mockedRequest = $this->getMock('\GuzzleHttp\Message\RequestInterface');
+        $this->mockedResponse = $this->getMock('\GuzzleHttp\Message\ResponseInterface');
         $this->assert = $assert;
 
         $mockedClient->expects($this->any())
                      ->method('createRequest')
                      ->will($this->returnCallback(array($this,'assertTestSendCallback')));
 
-        $this->mockedRequest->expects($this->any())
-                            ->method('send')
-                            ->will($this->returnValue($this->mockedResponse));
+        $mockedClient->expects($this->any())
+                     ->method('send')
+                     ->with($this->callback(function($request) {
+                        return $this->mockedRequest === $request;
+                     }))
+                     ->will($this->returnValue($this->mockedResponse));
 
         $this->helperMakeAccessable($this->SUT, 'setClient', array($mockedClient));
 
@@ -214,7 +204,7 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
 
         if ($assert['status'] === true) {
             $this->assertInstanceOf('\SeoStats\V3\HttpAdapter\ResponseInterface', $result);
-            $this->assertInstanceOf('\Guzzle\Http\Message\MessageInterface', $result->getResponseObject());
+            $this->assertInstanceOf('\GuzzleHttp\Message\MessageInterface', $result->getResponseObject());
         }
     }
 
@@ -228,12 +218,8 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
             $this->assertEquals($this->assert['httpUrl'], func_get_arg(1));
         }
 
-        if (isset($this->assert['httpHeader'])) {
-            $this->assertEquals($this->assert['httpHeader'], func_get_arg(2));
-        }
-
-        if (isset($this->assert['httpBody'])) {
-            $this->assertEquals($this->assert['httpBody'], func_get_arg(3));
+        if (isset($this->assert['options'])) {
+            $this->assertEquals($this->assert['options'], func_get_arg(2));
         }
 
         return $this->mockedRequest;
@@ -241,16 +227,18 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
 
     public function providerTestCreateAdapter ()
     {
-        $validUrl = 'http://localhost';
-        $validConfig = array(
+        $validConfig1 = array(
+            'var1'=>'foo',
+            'var2'=>'bar'
+        );
+        $validConfig2 = array(
             'var1'=>'foo',
             'var2'=>'bar'
         );
 
-        $validArgsFull = array($validUrl, $validConfig);
-        $validArgsUrl = array($validUrl, null);
-        $validArgsConfig = array(null, $validConfig);
-        $validArgsNull = array(null, null);
+        $validArgsFull = array($validConfig1);
+        $validArgsAlternativ = array($validConfig2);
+        $validArgsNull = array(null);
 
         return array(
             array(
@@ -259,24 +247,19 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
                 $validArgsFull
             ),
             array(
-                $validArgsUrl,
-                $validArgsConfig,
-                $validArgsFull
-            ),
-            array(
-                $validArgsConfig,
-                $validArgsUrl,
-                $validArgsFull
-            ),
-            array(
                 $validArgsNull,
                 $validArgsFull,
                 $validArgsFull
             ),
             array(
+                $validArgsFull,
+                $validArgsAlternativ,
+                $validArgsAlternativ
+            ),
+            array(
                 $validArgsNull,
                 $validArgsNull,
-                array(null, array())
+                array(array())
             )
         );
     }
@@ -309,8 +292,10 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
                 'status'      => true,
                 'httpMethode' => 'get',
                 'httpUrl'     => array('http://www.github.com', array('foo'=>'bar')),
-                'httpHeader' => array(),
-                'httpBody' => "",
+                'options' => array(
+                    'headers' => array(),
+                    'body' => "",
+                )
             )
         );
 

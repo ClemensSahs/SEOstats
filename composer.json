@@ -38,7 +38,7 @@
 		"php" : ">=5.3",
 		"ext-curl" : "*",
 		"ext-json" : "*",
-		"guzzle/guzzle" : "~3"
+		"guzzlehttp/guzzle": "~5.0"
 	},
     "require-dev" : {
 		"squizlabs/php_codesniffer" : "~1",
