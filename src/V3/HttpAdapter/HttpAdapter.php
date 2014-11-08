@@ -131,7 +131,7 @@ class HttpAdapter implements HttpAdapterInterface
      * @param array $variables
      * @return HttpAdapter
      */
-    public function setVariable($variables)
+    public function setVariable( array $variables)
     {
         $this->requestVariable = $variables;
         return $this;
@@ -208,7 +208,7 @@ class HttpAdapter implements HttpAdapterInterface
      * @param array $options
      * @return HttpAdapter
      */
-    public function setOptions($options = array())
+    public function setOptions( array $options = array())
     {
         $this->requestOptions = $options;
         return $this;

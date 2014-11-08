@@ -16,7 +16,7 @@ interface HttpAdapterInterface
     public function clean();
     public function getUrl();
 
-    public function setVariable($variables);
+    public function setVariable( array $variables);
 
     public function getVariable();
 
@@ -29,6 +29,8 @@ interface HttpAdapterInterface
     public function getHeader();
 
     public function getOptions();
+
+    public function setOptions( array $options = array());
 
     /**
      * @param array
