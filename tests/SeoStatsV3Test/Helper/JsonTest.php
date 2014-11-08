@@ -7,11 +7,17 @@ use SeoStats\V3\Helper\Json;
 
 class JsonTest extends AbstractSeoStatsTestCase
 {
-    protected $SUT;
+    protected $SUT_LIST = array();
 
-    public function setup()
+    public function __construct($name = null, array $data = array(), $dataName = '')
     {
-        parent::setup();
+        $this->SUT_LIST[]= 'SeoStats\V3\Helper\Json';
+
+        if (defined("HHVM_VERSION") || version_compare(phpversion(), "5.5", ">=")) {
+            $this->SUT_LIST[]= 'SeoStatsV3Test\Assert\Helper\HelperJsonMockLastErrorMessage';
+        }
+
+        parent::__construct($name, $data, $dataName);
     }
 
     /**
@@ -20,10 +26,10 @@ class JsonTest extends AbstractSeoStatsTestCase
      * @group helper-json
      * @dataProvider providerTestDecode
      */
-    public function testDecode ($args, $expected)
+    public function testDecode ($SUT, $args, $expected)
     {
         try {
-            $method = array('SeoStats\V3\Helper\Json','decode');
+            $method = array($SUT,'decode');
             $result = call_user_func_array($method, $args);
         } catch (\Exception $exception) {
             if (is_array($expected) && class_exists($expected[0])) {
@@ -44,12 +50,25 @@ class JsonTest extends AbstractSeoStatsTestCase
      * @group helper-json
      * @dataProvider providerTestEncode
      */
-    public function testEncode ($args, $expected)
+    public function testEncode ($SUT, $args, $expected)
     {
-        $method = array('SeoStats\V3\Helper\Json','encode');
+        $method = array($SUT,'encode');
         $result = call_user_func_array($method, $args);
 
         $this->assertEquals($expected, $result);
+    }
+
+    protected function providerTestEncodeAndDecodeOverwrite ($dataStackSingle)
+    {
+
+        $dataStackNew = array();
+        foreach ($this->SUT_LIST as $SUT) {
+            foreach ($dataStackSingle as $value) {
+                $dataStackNew[] = array_merge(array($SUT), $value);
+            }
+        }
+
+        return $dataStackNew;
     }
 
     public function providerTestEncode ()
@@ -72,14 +91,14 @@ class JsonTest extends AbstractSeoStatsTestCase
         );
         $validData2Json = '{"key1":"value","key2":{"0":"value1","1":"value2"}}';
 
-        return array(
+        return $this->providerTestEncodeAndDecodeOverwrite(array(
             array(
                 array($validData1Nativ), $validData1Json
             ),
             array(
                 array($validData2Nativ), $validData2Json
             ),
-        );
+        ));
     }
 
     public function providerTestDecode ()
@@ -126,7 +145,7 @@ class JsonTest extends AbstractSeoStatsTestCase
                                           sprintf('/\(code: %s\)/i', JSON_ERROR_UTF8)
                                           );
 
-        return array(
+        return $this->providerTestEncodeAndDecodeOverwrite(array(
             array(
                 array($validData1Json, true), $validData1Nativ
             ),
@@ -142,6 +161,6 @@ class JsonTest extends AbstractSeoStatsTestCase
             array(
                 array($invalidDataJson3), $invalidDataJson3Response
             ),
-        );
+        ));
     }
 }

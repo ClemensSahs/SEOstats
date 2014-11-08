@@ -31,7 +31,7 @@ class Json
         return $data ?: "{}";
     }
 
-    private static function guardJsonError($jsonMethode)
+    protected static function guardJsonError($jsonMethode)
     {
         $errorMessage = static::jsonLastErrorMassage();
         if (!$errorMessage) {
@@ -46,7 +46,7 @@ class Json
         throw new \RuntimeException($msg);
     }
 
-    private static function jsonLastErrorMassage()
+    protected static function jsonLastErrorMassage()
     {
         $errorCode = json_last_error();
 
@@ -54,7 +54,7 @@ class Json
             return null;
         }
 
-        if (function_exists('json_last_error_msg')) {
+        if (static::isNativJsonLastErrorMassageExists()) {
             $message = json_last_error_msg();
         } else {
             static $errorCodeList = array(
@@ -72,5 +72,10 @@ class Json
         }
 
         return $message . " (code: {$errorCode})";
+    }
+
+    protected static function isNativJsonLastErrorMassageExists()
+    {
+        return function_exists('json_last_error_msg');
     }
 }
