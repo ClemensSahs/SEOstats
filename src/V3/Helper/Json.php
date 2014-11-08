@@ -33,17 +33,44 @@ class Json
 
     private static function guardJsonError($jsonMethode)
     {
-        $errorCode = json_last_error();
-        if (JSON_ERROR_NONE == $errorCode) {
+        $errorMessage = static::jsonLastErrorMassage();
+        if (!$errorMessage) {
             return;
         }
 
-        $msg = sprintf('Unable %s content into JSON: %s (code: %s)',
-                                            $jsonMethode,
-                                            json_last_error_msg(),
-                                            $errorCode
-                                    );
+        $msg = sprintf('Unable %s content into JSON: %s',
+                        $jsonMethode,
+                        $errorMessage
+                        );
 
         throw new \RuntimeException($msg);
+    }
+
+    private static function jsonLastErrorMassage()
+    {
+        $errorCode = json_last_error();
+
+        if (JSON_ERROR_NONE === $errorCode) {
+            return null;
+        }
+
+        if (function_exists('json_last_error_msg')) {
+            $message = json_last_error_msg();
+        } else {
+            static $errorCodeList = array(
+                JSON_ERROR_NONE             => null,
+                JSON_ERROR_DEPTH            => 'Maximum stack depth exceeded',
+                JSON_ERROR_STATE_MISMATCH   => 'Underflow or the modes mismatch',
+                JSON_ERROR_CTRL_CHAR        => 'Unexpected control character found',
+                JSON_ERROR_SYNTAX           => 'Syntax error, malformed JSON',
+                JSON_ERROR_UTF8             => 'Malformed UTF-8 characters, possibly incorrectly encoded'
+            );
+
+            $message = array_key_exists($errorCode, $errorCodeList)
+                ? $errorCodeList[$errorCode]
+                : "Unknown error";
+        }
+
+        return $message . " (code: {$errorCode})";
     }
 }
