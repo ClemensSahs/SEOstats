@@ -33,14 +33,18 @@ class Json
 
     protected static function guardJsonError($jsonMethode)
     {
-        $errorMessage = static::jsonLastErrorMassage();
-        if (!$errorMessage) {
+        $errorCode = json_last_error();
+
+        if (JSON_ERROR_NONE === $errorCode) {
             return;
         }
 
-        $msg = sprintf('Unable %s content into JSON: %s',
+        $errorMessage = static::jsonLastErrorMassage($errorCode);
+
+        $msg = sprintf('Unable %s content into JSON: %s . (code: %s)"',
                         $jsonMethode,
-                        $errorMessage
+                        $errorMessage,
+                        $errorCode
                         );
 
         throw new \RuntimeException($msg);
@@ -48,15 +52,8 @@ class Json
 
     protected static function jsonLastErrorMassage()
     {
-        $errorCode = json_last_error();
-
-        if (JSON_ERROR_NONE === $errorCode) {
-            return null;
-        }
-
-        if (static::isNativJsonLastErrorMassageExists()) {
-            $message = json_last_error_msg();
-        } else {
+        if (!static::isNativJsonLastErrorMassageExists()) {
+            $errorCode = json_last_error();
             static $errorCodeList = array(
                 JSON_ERROR_NONE             => null,
                 JSON_ERROR_DEPTH            => 'Maximum stack depth exceeded',
@@ -69,13 +66,15 @@ class Json
             $message = array_key_exists($errorCode, $errorCodeList)
                 ? $errorCodeList[$errorCode]
                 : "Unknown error";
+        } else {
+            $message = json_last_error_msg();
         }
 
-        return $message . " (code: {$errorCode})";
+        return $message;
     }
 
     protected static function isNativJsonLastErrorMassageExists()
     {
-        return function_exists('json_last_error_msg');
+        return (bool) function_exists('json_last_error_msg');
     }
 }

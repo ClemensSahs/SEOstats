@@ -28,20 +28,21 @@ class JsonTest extends AbstractSeoStatsTestCase
      */
     public function testDecode ($SUT, $args, $expected)
     {
+        // var_dump($SUT, $args);
+        // echo "\n\n\n";
         try {
             $method = array($SUT,'decode');
             $result = call_user_func_array($method, $args);
-        } catch (\Exception $exception) {
-            if (is_array($expected) && class_exists($expected[0])) {
-                $this->assertInstanceOf($expected[0], $exception);
-                $this->assertRegExp($expected[1], $exception->getMessage());
 
-                return;
+            $this->assertEquals($expected, $result);
+        } catch (\Exception $exception) {
+            if (!is_array($expected) || !class_exists($expected[0])) {
+                throw $exception;
             }
 
-            throw $exception;
+            $this->assertInstanceOf($expected[0], $exception);
+            $this->assertRegExp($expected[1], $exception->getMessage());
         }
-        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -62,8 +63,8 @@ class JsonTest extends AbstractSeoStatsTestCase
     {
 
         $dataStackNew = array();
-        foreach ($this->SUT_LIST as $SUT) {
-            foreach ($dataStackSingle as $value) {
+        foreach ($dataStackSingle as $value) {
+            foreach ($this->SUT_LIST as $SUT) {
                 $dataStackNew[] = array_merge(array($SUT), $value);
             }
         }
