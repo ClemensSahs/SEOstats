@@ -6,8 +6,8 @@ php:
   - hhvm
 
 env:
-  - PHPUNIT_URL=https://phar.phpunit.de/phpunit-3.7.37.phar PHPUNIT_ARG=--exclude-group v3
-  - PHPUNIT_URL=https://phar.phpunit.de/phpunit.phar PHPUNIT_ARG=--group v3
+  - PHPUNIT_URL="https://phar.phpunit.de/phpunit-3.7.37.phar" PHPUNIT_ARG="--exclude-group v3"
+  - PHPUNIT_URL="https://phar.phpunit.de/phpunit.phar" PHPUNIT_ARG="--group v3"
 
 before_install:
   - wget http://getcomposer.org/composer.phar
