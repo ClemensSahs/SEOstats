@@ -14,7 +14,7 @@ class JsonTest extends AbstractSeoStatsTestCase
         $this->SUT_LIST[]= 'SeoStats\V3\Helper\Json';
 
         if (defined("HHVM_VERSION") || version_compare(phpversion(), "5.5", ">=")) {
-            $this->SUT_LIST[]= 'SeoStatsV3Test\Assert\Helper\HelperJsonMockLastErrorMessage';
+            $this->SUT_LIST[]= 'SeoStatsV3Test\Asset\HelperJsonMockLastErrorMessage';
         }
 
         parent::__construct($name, $data, $dataName);
@@ -36,7 +36,10 @@ class JsonTest extends AbstractSeoStatsTestCase
 
             $this->assertEquals($expected, $result);
         } catch (\Exception $exception) {
-            if (!is_array($expected) || !class_exists($expected[0])) {
+
+            if (!is_array($expected) ||
+                !(isset($expected[0]) && class_exists($expected[0]))
+            ) {
                 throw $exception;
             }
 

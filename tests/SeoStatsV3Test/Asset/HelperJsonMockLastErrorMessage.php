@@ -1,6 +1,6 @@
 <?php
 
-namespace SeoStatsV3Test\Assert\Helper;
+namespace SeoStatsV3Test\Asset;
 
 use SeoStats\V3\Helper\Json;
 
