@@ -84,4 +84,14 @@ abstract class AbstractSeoStatsTestCase extends \PHPUnit_Framework_TestCase
         return $this->reflection[$objectClass];
     }
 
+
+
+    public function isHhvm($version = null, $conpareMethod = '<')
+    {
+        return defined('HHVM_VERSION') &&
+               (
+                is_null($version) ||
+                version_compare(HHVM_VERSION, $version, $conpareMethod)
+               );
+    }
 }
