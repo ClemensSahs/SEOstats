@@ -61,6 +61,11 @@ class JsonTest extends AbstractSEOstatsTestCase
 
     public function helperJsonGivesFalseOrNull ()
     {
-        return defined('HHVM_VERSION') || version_compare(PHP_VERSION, '5.5', '<');
+        return (
+                    defined('HHVM_VERSION') &&
+                    version_compare(HHVM_VERSION, '3.2', '<')
+                    # https://github.com/facebook/hhvm/pull/3457
+               ) ||
+               version_compare(PHP_VERSION, '5.5', '<');
     }
 }
