@@ -36,7 +36,7 @@ class GoogleApiServiceTest extends AbstractGoogleTestCase
         } catch (\PHPUnit_Framework_Error $e) {
 
             $regExp = $this->isHhvm()
-                ? '/^__construct() expects exactly 1 parameter, 0 given/'
+                ? '/^__construct\(\) expects exactly 1 parameter, 0 given/'
                 : '/^Argument 1 passed to (\S+) must be an instance of (\S+), none given, called in/';
 
             $this->assertRegExp($regExp, $e->getMessage());
