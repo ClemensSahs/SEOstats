@@ -4,6 +4,7 @@ imports:
 tools:
     external_code_coverage:
         timeout: 2100
+        runs: 8
 
 filter:
     excluded_paths:
