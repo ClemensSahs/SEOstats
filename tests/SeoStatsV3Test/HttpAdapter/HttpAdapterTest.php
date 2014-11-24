@@ -19,6 +19,7 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
      * @dataProvider providerTestCreateAdapter
      * @group v3
      * @group http-adapter
+     * @group http-adapter-client
      */
     public function testCreateAdapter ($args, $argsMethod, $assert)
     {
@@ -45,6 +46,7 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
      * @dataProvider providerTestHttpMethodSetterAndGetter
      * @group v3
      * @group http-adapter
+     * @group http-adapter-client
      */
     public function testHttpMethodSetterAndGetter ($method, $assert)
     {
@@ -63,6 +65,7 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
     /**
      * @group v3
      * @group http-adapter
+     * @group http-adapter-client
      */
     public function testHeaderSetterAndGetter ()
     {
@@ -83,6 +86,7 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
     /**
      * @group v3
      * @group http-adapter
+     * @group http-adapter-client
      */
     public function testBodySetterAndGetter ()
     {
@@ -103,6 +107,7 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
     /**
      * @group v3
      * @group http-adapter
+     * @group http-adapter-client
      */
     public function testClean ()
     {
@@ -118,6 +123,7 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
     /**
      * @group v3
      * @group http-adapter
+     * @group http-adapter-client
      */
     public function testAutoClean ()
     {
@@ -155,6 +161,7 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
     /**
      * @group v3
      * @group http-adapter
+     * @group http-adapter-client
      */
     public function testClientSetterAndGetter ()
     {
@@ -173,6 +180,7 @@ class HttpAdapterTest extends AbstractSeoStatsTestCase
      * @dataProvider providerTestSend
      * @group v3
      * @group http-adapter
+     * @group http-adapter-client
      */
     public function testSend ($attributes, $assert)
     {
