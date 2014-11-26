@@ -21,7 +21,6 @@ class Manager
 
         $service->setConfig($this->getConfig());
         $this->set($key, $service);
-
     }
 
     /**
@@ -43,7 +42,7 @@ class Manager
     /**
      *
      * @param string $key
-     * @return AbstractService:
+     * @return AbstractService
      */
     public function get($key)
     {
@@ -57,7 +56,7 @@ class Manager
     /**
      *
      * @param string $key
-     * @return AbstractService:
+     * @return AbstractService
      */
     public function set($key, AbstractService $service)
     {
