@@ -4,6 +4,8 @@ namespace SeoStats\V3\Service;
 
 class Manager
 {
+    use ConfigAwareTrait;
+
     protected $services = array();
     protected $serviceClassMap = array(
         'google-backlinks' => '\SeoStats\Service\Google\Backlinks',
@@ -15,7 +17,11 @@ class Manager
         $this->guardCanCreateService($key);
 
         $class = $this->serviceClassMap[$key];
-        $service = new $class($config);
+        $service = new $class();
+
+        $service->setConfig($this->getConfig());
+        $this->set($key, $service);
+
     }
 
     /**
@@ -37,7 +43,7 @@ class Manager
     /**
      *
      * @param string $key
-     * @return multitype:
+     * @return AbstractService:
      */
     public function get($key)
     {
@@ -48,11 +54,21 @@ class Manager
         return $this->services[$key];
     }
 
-    public function set($key, $service)
+    /**
+     *
+     * @param string $key
+     * @return AbstractService:
+     */
+    public function set($key, AbstractService $service)
     {
         $this->services[$key] = $service;
     }
 
+    /**
+     *
+     * @param string $key
+     * @return bool
+     */
     public function has($key)
     {
         return isset($this->services[$key]);

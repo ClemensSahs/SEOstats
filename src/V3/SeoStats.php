@@ -57,6 +57,7 @@ class SeoStats
     public function setServiceManager(Manager $manager)
     {
         $this->manager = $manager;
+        $this->manager->setConfig($this->getConfig());
     }
 
     /**
