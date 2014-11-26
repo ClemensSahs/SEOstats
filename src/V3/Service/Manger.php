@@ -8,8 +8,8 @@ class Manager
 
     protected $services = array();
     protected $serviceClassMap = array(
-        'google-backlinks' => '\SeoStats\Service\Google\Backlinks',
-        'google-siteindextotal' => '\SeoStats\Service\Google\Siteindextotal',
+        'google-backlinks' => '\SeoStats\V3\Service\Google\Backlinks',
+        'google-siteindextotal' => '\SeoStats\V3\Service\Google\Siteindextotal',
     );
 
     protected function createService($key)
