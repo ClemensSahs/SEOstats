@@ -28,14 +28,7 @@ class SiteIndexTotalTest extends AbstractGoogleApiTestCase
         $page = new Page($url);
 
         $this->helperMockHttpAdapter($url);
-        $this->SUT->setHttpAdapter($this->mockedHttpAdapter);
-
-        $this->mockedResponseObject->expects($this->once())
-                                   ->method('')
-                                   ->will();
-
-        $result = $this->SUT->call($page);
-        $this->assertGreaterThan(0, $result);
+        $this->SUT->parseUrl($page);
     }
 
     /**
@@ -53,36 +46,5 @@ class SiteIndexTotalTest extends AbstractGoogleApiTestCase
 
         $result = $this->SUT->call($page);
         $this->assertGreaterThan(0, $result);
-    }
-
-    /**
-     * @group v3
-     * @group service
-     * @group service-google
-     */
-    public function helperMockHttpAdapter ($url)
-    {
-        $httpAdapter = $this->getMock('\SeoStats\V3\HttpAdapter\HttpAdapter');
-        $responseObject = $this->getMock('\SeoStats\V3\HttpAdapter\ResponseInterface');
-
-        $httpAdapter->expects($this->once())
-                    ->method('setVariable')
-                    ->will($this->returnCallback(function($args) use ($url, $httpAdapter)
-                    {
-                        $this->assertInternalType('array',$args);
-                        $this->assertArrayHasKey('google_query', $args);
-                        $this->assertArrayHasKey('google_rsz', $args);
-                        $this->assertContains($url, $args['google_query']);
-
-                        return $httpAdapter;
-                    }));
-
-        $httpAdapter->method('setHttpMethod')->will($this->returnSelf());
-        $httpAdapter->method('setUrl')->will($this->returnSelf());
-        $httpAdapter->method('send')->will($this->returnValue($responseObject));
-
-
-       $this->mockedHttpAdapter = $httpAdapter;
-       $this->mockedResponseObject = $responseObject;
     }
 }
