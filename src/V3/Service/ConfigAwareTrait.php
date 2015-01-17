@@ -12,9 +12,9 @@ trait ConfigAwareTrait
 
     /**
      *
-     * @param Config $httpAdapter
+     * @param Config $config
      */
-    protected function setConfig(Config $config)
+    public function setConfig(Config $config)
     {
         $this->config = $config;
     }
@@ -23,7 +23,7 @@ trait ConfigAwareTrait
      *
      * @return Config
      */
-    protected function getConfig()
+    public function getConfig()
     {
         return $this->config;
     }

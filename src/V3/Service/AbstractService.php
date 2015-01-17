@@ -7,8 +7,8 @@ use SeoStats\V3\SeoStats;
 
 abstract class AbstractService
 {
-    use HttpAdapter\HttpAdapterAwareTrait;
-    use ConfigAwareTrait;
+    public function __construct ()
+    {}
 
     public function getNoData()
     {
