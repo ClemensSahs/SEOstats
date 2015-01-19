@@ -188,8 +188,14 @@ class HttpAdapter implements HttpAdapterInterface
      * @param array $variables
      * @return HttpAdapter
      */
-    public function setBaseVariable( array $variables)
+    public function setBaseVariable($variables)
     {
+        if (! is_object($variables) &&
+            ! is_array($variables)
+        ) {
+            throw new \RuntimeException("Giving variable was not valid");
+        }
+
         $this->baseVariable = $variables;
 
         return $this;
@@ -200,6 +206,13 @@ class HttpAdapter implements HttpAdapterInterface
      */
     public function getBaseVariable()
     {
+        if (is_object($this->baseVariable)) {
+            return $this->baseVariable->toArray();
+        }
+        if (! is_array($this->baseVariable)) {
+            return array();
+        }
+
         return $this->baseVariable;
     }
 
@@ -233,12 +246,18 @@ class HttpAdapter implements HttpAdapterInterface
     {
         $client = $this->getClient();
 
-        $urlArray = array($this->getUrl(), $this->getVariable());
+        $urlArray = array(
+            $this->getUrl(),
+            array_merge($this->getVariable(),
+                        $this->getBaseVariable()
+        ));
+
 
         $request = $client->createRequest($this->getHttpMethod(),
                                           $urlArray,
                                           $this->getOptions()
                                          );
+
         $response = $client->send($request);
 
         $this->runAutoClean();

@@ -35,7 +35,7 @@ interface HttpAdapterInterface
     /**
      * @param array
      */
-    public function setBaseVariable( array $variables);
+    public function setBaseVariable($variables);
 
     public function send();
 }
