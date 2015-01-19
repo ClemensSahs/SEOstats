@@ -26,7 +26,13 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
 
     public function initService(Config $config)
     {
-        $this->setUrlFormat($config->get('google-search-api-url'));
+        $this->setConfig($config);
+
+        $config->guardHasKeys(array(
+            'google_search_api_url',
+            'google_api_key'
+        ));
+        $this->setUrlFormat($config->get('google_search_api_url'));
     }
 
     /**
@@ -53,7 +59,8 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
         }
 
         $this->getHttpAdapter()->setHttpMethod('get')
-                               ->setUrl($this->getUrlFormat());
+                               ->setUrl($this->getUrlFormat())
+                               ->setBaseVariable($this->getConfig());
 
         $this->parseUrl($url);
 
@@ -74,8 +81,10 @@ abstract class AbstractGoogleApiService extends AbstractGoogleService
         if ($responseObject->getStatusCode() === 200) {
             $obj = $responseObject->getBodyJson();
 
-            if (isset($obj->responseData->cursor->estimatedResultCount)) {
-                return intval($obj->responseData->cursor->estimatedResultCount);
+            var_dump($obj->queries->request[0]);
+
+            if (isset($obj->queries->request[0]->totalResults)) {
+                return intval($obj->queries->request[0]->totalResults);
             }
         }
 

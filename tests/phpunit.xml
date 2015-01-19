@@ -12,6 +12,15 @@
          syntaxCheck="false"
          verbose="false"
 >
+    <php>
+        <!--
+        for live tests
+        <var name="liveKeys" value='{
+            "google_api_key":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "google_search_engine_id":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        }'/>
+        -->
+    </php>
 
     <testsuites>
         <testsuite name="SEOStats Test Suite">

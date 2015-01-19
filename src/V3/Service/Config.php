@@ -12,7 +12,7 @@ class Config
     public function __construct()
     {
         $this->setArray(array(
-            'google-search-api-url'=>'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz={google_rsz}&q={google_query}'
+            'google_search_api_url'=>'https://www.googleapis.com/customsearch/v1?key={google_api_key}&cx={google_search_engine_id}&q={google_query}&as_sitesearch={google_site_filter}'
         ));
     }
 

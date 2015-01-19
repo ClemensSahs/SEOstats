@@ -138,7 +138,7 @@ class GoogleApiServiceTest extends AbstractGoogleTestCase
         $this->mockedConfig = $this->getMock('\SeoStats\V3\Service\Config');
         $this->mockedConfig->expects($this->once())
                ->method('get')
-               ->with('google-search-api-url')
+               ->with('google_search_api_url')
                ->will($this->returnValue('test-url'));
 
         return $this->getMockBuilder('\SeoStats\V3\Service\Google\AbstractGoogleApiService')

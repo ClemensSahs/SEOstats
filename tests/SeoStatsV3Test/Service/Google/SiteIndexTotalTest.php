@@ -39,7 +39,7 @@ class SiteIndexTotalTest extends AbstractGoogleApiTestCase
      */
     public function testSiteIndexTotalLive ()
     {
-        $url = 'www.github.com';
+        $url = 'github.com';
         $page = new Page($url);
 
         $this->SUT->setHttpAdapter(new HttpAdapter());

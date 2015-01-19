@@ -9,8 +9,8 @@ class SiteIndexTotal extends AbstractGoogleApiService
     public function parseUrl(PageInterface $url)
     {
         $this->getHttpAdapter()->setVariable(array(
-            'google_query'=> urlencode("site:" . $url->getUrl()),
-            'google_rsz'=> 1
+            'google_site_filter'=> $url->getUrl(),
+            'google_query'=> ""
         ));
     }
 }

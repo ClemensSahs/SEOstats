@@ -3,12 +3,31 @@
 namespace SeoStatsV3Test;
 
 use ReflectionClass;
+use SeoStats\V3\Service\Config;
 
 abstract class AbstractSeoStatsTestCase extends \PHPUnit_Framework_TestCase
 {
     public function setup()
     {
         parent::setup();
+    }
+
+
+    public function injectLiveKeysInToConfig (Config $config)
+    {
+        global $liveKeys;
+
+        if (is_string($liveKeys)) {
+            $liveKeys = json_decode($liveKeys, true);
+        }
+
+        if (! is_array($liveKeys)) {
+            return;
+        }
+
+        foreach($liveKeys as $key => $value) {
+            $config->set($key, $value);
+        }
     }
 
 

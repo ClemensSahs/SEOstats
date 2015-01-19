@@ -17,6 +17,8 @@ abstract class AbstractGoogleApiTestCase extends AbstractGoogleTestCase
         $this->serviceConfigMocked = $this->getMock('\SeoStats\V3\Service\Config');
         $this->serviceConfig = new Config();
 
+        $this->injectLiveKeysInToConfig($this->serviceConfig);
+
         $class = $this->sutClass;
         $this->SUT = new $class($this->serviceConfig);
     }
@@ -32,7 +34,6 @@ abstract class AbstractGoogleApiTestCase extends AbstractGoogleTestCase
                     {
                         $this->assertInternalType('array',$args);
                         $this->assertArrayHasKey('google_query', $args);
-                        $this->assertArrayHasKey('google_rsz', $args);
                         $this->assertContains($url, $args['google_query']);
 
                         return $httpAdapter;
