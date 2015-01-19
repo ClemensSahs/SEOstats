@@ -57,4 +57,31 @@ class Config
     {
         return isset($this->config[$key]);
     }
+
+    /**
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function guardHasKeys(array $keys)
+    {
+        foreach ($keys as $key) {
+            if ($this->has($key)) {
+                continue;
+            }
+
+            throw new \RuntimeException(sprintf("don't have a key called '%s'",
+                                                $key
+                                        ));
+        }
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->config;
+    }
 }
